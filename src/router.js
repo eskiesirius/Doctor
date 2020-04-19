@@ -1390,8 +1390,8 @@ const router = new Router({
           }
         },
         {
-          path: '/pages/forgot-password',
-          name: 'page-forgot-password',
+          path: '/forgot-password',
+          name: 'forgot-password',
           component: () => import('@/views/pages/ForgotPassword.vue'),
           meta: {
             rule: 'regular'
