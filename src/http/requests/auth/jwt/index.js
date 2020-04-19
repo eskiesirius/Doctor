@@ -38,7 +38,11 @@ export default {
   logout(){
     return axios.post('/logout')
   },
-  refreshToken () {
-    return axios.post('/api/auth/refresh-token', {accessToken: localStorage.getItem('accessToKen')})
+  async forgotPassword(email) {
+    await axios.get('sanctum/csrf-cookie')
+
+    return axios.post('password/email', {
+      email
+    })
   }
 }

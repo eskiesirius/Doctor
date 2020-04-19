@@ -24,9 +24,12 @@
                                     <p>Please enter your email address and we'll send you instructions on how to reset your password.</p>
                                 </div>
 
-                                <vs-input type="email" label-placeholder="Email" v-model="value1" class="w-full mb-8" />
-                                <vs-button type="border" to="/pages/login" class="px-4 w-full md:w-auto">Back To Login</vs-button>
-                                <vs-button class="float-right px-4 w-full md:w-auto mt-3 mb-8 md:mt-0 md:mb-0">Recover Password</vs-button>
+                                <div>
+                                    <span class="text-danger text-sm">{{ emailErrorMessage }}</span>
+                                    <vs-input type="email" label-placeholder="Email" v-model="email" class="w-full mb-8" />
+                                </div>
+                                <vs-button type="border" to="/login" class="px-4 w-full md:w-auto">Back To Login</vs-button>
+                                <vs-button class="float-right px-4 w-full md:w-auto mt-3 mb-8 md:mt-0 md:mb-0" @click="forgotPassword">Recover Password</vs-button>
                             </div>
                         </div>
                     </div>
@@ -40,7 +43,37 @@
 export default {
   data () {
     return {
-      value1: ''
+      email: '',
+      emailErrorMessage: ''
+    }
+  },
+  methods: {
+    forgotPassword() {
+        this.$vs.loading()
+
+        this.$store.dispatch('auth/forgotPassword', this.email).then(response => {
+            this.$vs.loading.close()
+            this.$vs.notify({
+                title: 'Success',
+                text: response.data.message,
+                iconPack: 'feather',
+                icon: 'icon-alert-circle',
+                color: 'success'
+            })
+        }).catch(error => {
+            this.$vs.loading.close()
+            this.$vs.notify({
+                title: 'Error',
+                text: error.response.data.message,
+                iconPack: 'feather',
+                icon: 'icon-alert-circle',
+                color: 'danger'
+            })
+
+            if (error.response.data.errors.email){
+                this.emailErrorMessage = error.response.data.errors.email[0]
+            }
+        })
     }
   }
 }

@@ -361,9 +361,13 @@ export default {
         .catch(error => { reject(error) })
     })
   },
-  fetchAccessToken () {
-    // return new Promise((resolve) => {
-    //   jwt.refreshToken().then(response => { resolve(response) })
-    // })
+  forgotPassword({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      jwt.forgotPassword(payload)
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => { reject(error) })
+    })
   }
 }
