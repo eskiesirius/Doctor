@@ -38,7 +38,7 @@
 export default{
   props: {
     userId: {
-      type: Number,
+      type: [ String, Number ],
       required: true
     }
   },
@@ -47,12 +47,12 @@ export default{
       return this.$store.getters['chat/chatDataOfUser'](this.userId)
     },
     activeUserImg () {
-      return this.$store.state.AppActiveUser.photoURL
+      return this.$store.state.AppActiveUser.image
     },
     senderImg () {
       return (isSentByActiveUser) => {
-        if (isSentByActiveUser) return this.$store.state.AppActiveUser.photoURL
-        else return this.$store.getters['chat/contact'](this.userId).photoURL
+        if (isSentByActiveUser) return this.$store.state.AppActiveUser.image
+        else return this.$store.getters['chat/contact'](this.userId).image
       }
     },
     hasSentPreviousMsg () {

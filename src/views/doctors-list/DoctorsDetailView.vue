@@ -95,20 +95,9 @@
                         class="mr-4 mb-4"
                         icon-pack="feather"
                         icon="icon-shopping-cart"
-                        v-if="!isInCart(item_data.objectID)"
-                        @click="toggleItemInCart(item_data)">
+                        @click="chatDoctor(item_data)">
                         ASK FOR CONSULTATION
                       </vs-button>
-
-                      <vs-button
-                        v-else
-                        class="mr-4 mb-4"
-                        icon-pack="feather"
-                        icon="icon-shopping-cart"
-                        @click="$router.push({name: 'ecommerce-checkout'}).catch(err => {})">
-                        VIEW IN CART
-                      </vs-button>
-                      <!-- /Add To Cart Button -->
 
                       <!-- Wishlist Button -->
                       <vs-button

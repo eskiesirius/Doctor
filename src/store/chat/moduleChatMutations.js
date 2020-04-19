@@ -22,7 +22,7 @@ export default {
   SEND_CHAT_MESSAGE (state, payload) {
     if (payload.chatData) {
       // If there's already chat. Push msg to existing chat
-      state.chats[Object.keys(state.chats).find(key => Number(key) === payload.id)].msg.push(payload.msg)
+      state.chats[Object.keys(state.chats).find(key => String(key) === String(payload.id))].msg.push(payload.msg)
     } else {
       // Create New chat and add msg
       const chatId = payload.id

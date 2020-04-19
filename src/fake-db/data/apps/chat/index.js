@@ -4,73 +4,73 @@ import mock from '@/fake-db/mock.js'
 const data = {
   contacts: [
     {
-      uid: 1,
-      displayName: 'Felecia Rower',
+      uuid: 1,
+      name: 'Felecia Rower',
       about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-1.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-1.jpg'),
       status: 'offline'
     },
     {
-      uid: 2,
-      displayName: 'Adalberto Granzin',
+      uuid: 2,
+      name: 'Adalberto Granzin',
       about: 'Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-2.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-2.jpg'),
       status: 'do not disturb'
     },
     {
-      uid: 3,
-      displayName: 'Joaquina Weisenborn',
+      uuid: 3,
+      name: 'Joaquina Weisenborn',
       about: 'Soufflé soufflé caramels sweet roll. Jelly lollipop sesame snaps bear claw jelly beans sugar plum sugar plum.',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-3.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-3.jpg'),
       status: 'do not disturb'
     },
     {
-      uid: 4,
-      displayName: 'Verla Morgano',
+      uuid: 4,
+      name: 'Verla Morgano',
       about: 'Chupa chups candy canes chocolate bar marshmallow liquorice muffin. Lemon drops oat cake tart liquorice tart cookie. Jelly-o cookie tootsie roll halvah.',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-4.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-4.jpg'),
       status: 'online'
     },
     {
-      uid: 5,
-      displayName: 'Margot Henschke',
+      uuid: 5,
+      name: 'Margot Henschke',
       about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-5.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-5.jpg'),
       status: 'do not disturb'
     },
     {
-      uid: 6,
-      displayName: 'Sal Piggee',
+      uuid: 6,
+      name: 'Sal Piggee',
       about: 'Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-6.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-6.jpg'),
       status: 'online'
     },
     {
-      uid: 7,
-      displayName: 'Miguel Guelff',
+      uuid: 7,
+      name: 'Miguel Guelff',
       about: 'Biscuit powder oat cake donut brownie ice cream I love soufflé. I love tootsie roll I love powder tootsie roll.',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-7.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-7.jpg'),
       status: 'online'
     },
     {
-      uid: 8,
-      displayName: 'Mauro Elenbaas',
+      uuid: 8,
+      name: 'Mauro Elenbaas',
       about: 'Bear claw ice cream lollipop gingerbread carrot cake. Brownie gummi bears chocolate muffin croissant jelly I love marzipan wafer.',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-8.jpg'),
       status: 'away'
     },
     {
-      uid: 9,
-      displayName: 'Bridgett Omohundro',
+      uuid: 9,
+      name: 'Bridgett Omohundro',
       about: 'Gummies gummi bears I love candy icing apple pie I love marzipan bear claw. I love tart biscuit I love candy canes pudding chupa chups liquorice croissant.',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-9.jpg'),
       status: 'offline'
     },
     {
-      uid: 10,
-      displayName: 'Zenia Jacobs',
+      uuid: 10,
+      name: 'Zenia Jacobs',
       about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
-      photoURL: require('@/assets/images/portrait/small/avatar-s-10.jpg'),
+      image: require('@/assets/images/portrait/small/avatar-s-10.jpg'),
       status: 'away'
     }
   ],
@@ -194,7 +194,7 @@ mock.onGet('/api/apps/chat/contacts').reply((request) => {
 
   // Filter contact based on search query
   const filteredContacts = data.contacts.filter((contact) => {
-    return contact.displayName.toLowerCase().includes(request.params.q.toLowerCase())
+    return contact.name.toLowerCase().includes(request.params.q.toLowerCase())
   })
 
   return [200, filteredContacts]
@@ -215,10 +215,16 @@ mock.onGet('/api/apps/chat/chats').reply(() => {
 mock.onGet('/api/apps/chat/chat-contacts').reply((request) => {
 
   const chatContactsArray = data.contacts.filter((contact) => {
-    if (data.chats[contact.uid]) return data.chats[contact.uid] && contact.displayName.toLowerCase().includes(request.params.q.toLowerCase())
+    if (data.chats[contact.uuid]) return data.chats[contact.uuid] && contact.name.toLowerCase().includes(request.params.q.toLowerCase())
   })
 
   return [200, chatContactsArray]
+})
+
+// POST : add chat lists
+mock.onPost('/api/apps/chat/chat-contacts').reply((request) => {
+  data.contacts.push(JSON.parse(request.data).payload)
+  return [200, data.contacts]
 })
 
 
@@ -245,7 +251,6 @@ mock.onPost('/api/apps/chat/mark-all-seen/').reply((request) => {
 
   return [200]
 })
-
 
 mock.onPost('/api/apps/chat/set-pinned/').reply((request) => {
   const {contactId, value} = JSON.parse(request.data)
@@ -275,10 +280,10 @@ mock.onPost('/api/apps/chat/msg').reply((request) => {
 
 
 mock.onPost('/api/apps/chat/mark-all-seen').reply((request) => {
-  const uid = JSON.parse(request.data).id
+  const uuid = JSON.parse(request.data).id
 
   // Get chat data
-  const chatLog = chatDataOfUser(uid)
+  const chatLog = chatDataOfUser(uuid)
 
   chatLog.msg.forEach((msg) => {
     msg.isSeen = true

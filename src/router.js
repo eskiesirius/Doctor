@@ -118,6 +118,7 @@ const router = new Router({
               { title: 'Home', url: '/' },
               { title: 'Chat', active: true }
             ],
+            parent: 'chat',
             pageTitle: 'Chat',
             rule: 'regular'
           }
@@ -155,7 +156,7 @@ const router = new Router({
         },
         {
           path: '/apps/chat',
-          name: 'chat-test',
+          name: 'test-chat',
           component: () => import('./views/apps/chat/Chat.vue'),
           meta: {
             rule: 'regular',

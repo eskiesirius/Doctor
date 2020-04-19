@@ -169,11 +169,9 @@
                                                     <!-- SECONDARY BUTTON: ADD-TO/VIEW-IN CART -->
                                                     <div
                                                         class="item-view-secondary-action-btn bg-primary p-3 flex flex-grow items-center justify-center text-white cursor-pointer"
-                                                        @click="cartButtonClicked(item)">
+                                                        @click="chatDoctor(item)">
                                                         <feather-icon icon="ShoppingBagIcon" svgClasses="h-4 w-4" />
-
-                                                        <span class="text-sm font-semibold ml-2" v-if="isInCart(item.objectID)">VIEW IN CART</span>
-                                                        <span class="text-sm font-semibold ml-2" v-else>ASK FOR CONSULATION</span>
+                                                        <span class="text-sm font-semibold ml-2" >ASK FOR CONSULATION</span>
                                                     </div>
                                                 </div>
                                             </template>
@@ -199,11 +197,9 @@
                                             </div>
                                             <div
                                                 class="item-view-secondary-action-btn bg-primary p-3 rounded-lg flex flex-grow items-center justify-center text-white cursor-pointer"
-                                                @click="cartButtonClicked(item)">
+                                                @click="chatDoctor(item)">
                                                 <feather-icon icon="ShoppingBagIcon" svgClasses="h-4 w-4" />
-
-                                                <span class="text-sm font-semibold ml-2" v-if="isInCart(item.objectID)">VIEW IN CART</span>
-                                                <span class="text-sm font-semibold ml-2" v-else>ASK FOR CONSULATION</span>
+                                                <span class="text-sm font-semibold ml-2">ASK FOR CONSULATION</span>
                                             </div>
                                         </template>
                                     </item-list-view>
@@ -343,11 +339,9 @@ export default {
     toggleItemInFavoriteList (item) {
       this.$store.dispatch('doctors_list/toggleItemInFavoriteList', item)
     },
-    additemInCart (item) {
-      this.$store.dispatch('eCommerce/additemInCart', item)
-    },
-    cartButtonClicked (item) {
-      this.isInCart(item.objectID) ? this.$router.push('/apps/eCommerce/checkout').catch(() => {}) : this.additemInCart(item)
+    chatDoctor(item){
+        this.$router.push({name: 'chat', params: item})
+        .catch(() => {})
     }
   },
   created () {

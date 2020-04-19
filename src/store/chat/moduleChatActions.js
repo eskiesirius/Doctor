@@ -26,12 +26,24 @@ export default {
     })
   },
 
+  addContact({ commit },payload){
+    return new Promise((resolve, reject) => {
+      axios.post('/api/apps/chat/chat-contacts', {payload})
+        .then((response) => {
+          commit('UPDATE_CONTACTS', response.data)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
+
   // API CALLS
   sendChatMessage ({ getters, commit, dispatch }, payload) {
     return new Promise((resolve, reject) => {
       axios.post('/api/apps/chat/msg', {payload})
         .then((response) => {
           payload.chatData = getters.chatDataOfUser(payload.id)
+
           if (!payload.chatData) { dispatch('fetchChatContacts') }
           commit('SEND_CHAT_MESSAGE', payload)
           resolve(response)

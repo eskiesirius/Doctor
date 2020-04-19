@@ -105,7 +105,7 @@ export default [
       {
         url: '/apps/chat',
         name: 'Chat',
-        slug: 'chat',
+        slug: 'test-chat',
         icon: 'MessageSquareIcon',
         i18n: 'Chat'
       },

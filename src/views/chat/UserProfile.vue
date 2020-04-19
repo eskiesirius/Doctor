@@ -8,11 +8,11 @@
 
 
                 <div class="relative inline-flex mx-auto mb-5 mt-6">
-                    <vs-avatar class="m-0 border-white border-2 border-solid shadow-md" :src="chatUser.photoURL" size="70px" />
+                    <vs-avatar class="m-0 border-white border-2 border-solid shadow-md" :src="chatUser.image" size="70px" />
                     <div class="h-5 w-5 border-white border-2 border-solid rounded-full absolute right-0 bottom-0" :class="'bg-' + statusColor"></div>
                 </div>
 
-                <h4 class="mr-2 self-center">{{ chatUser.displayName }}</h4>
+                <h4 class="mr-2 self-center">{{ chatUser.name }}</h4>
             </div>
 
             <component :is="scrollbarTag" class="scroll-area" :settings="settings" :key="$vs.rtl">

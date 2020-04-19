@@ -21,7 +21,7 @@
                             <!-- SECONDARY BUTTON: MOVE TO CART -->
                             <div
                                 class="item-view-secondary-action-btn bg-primary p-3 flex flex-grow items-center justify-center text-white cursor-pointer"
-                                @click="cartButtonClicked(item)">
+                                @click="chatDoctor(item)">
                                 <feather-icon icon="ShoppingBagIcon" svgClasses="h-4 w-4" />
 
                                 <span class="text-sm font-semibold ml-2">ASK FOR CONSULTATION</span>
@@ -51,9 +51,6 @@ export default {
     favoriteListitems () {
       return this.$store.state.doctors_list.favoriteList.slice().reverse()
     },
-    isInCart () {
-      return (itemId) => this.$store.getters['eCommerce/isInCart'](itemId)
-    },
     isInFavoriteList () {
       return (itemId) => this.$store.getters['doctors_list/isInFavoriteList'](itemId)
     }
@@ -62,15 +59,9 @@ export default {
     removeItemFromFavoriteList (item) {
       this.$store.dispatch('doctors_list/toggleItemInFavoriteList', item)
     },
-    cartButtonClicked (item) {
-      if (this.isInCart(item.objectID)) this.$router.push('/apps/eCommerce/checkout').catch(() => {})
-      else {
-        this.additemInCart(item)
-        this.removeItemFromFavoriteList(item)
-      }
-    },
-    additemInCart (item) {
-      this.$store.dispatch('eCommerce/additemInCart', item)
+    chatDoctor(item){
+        this.$router.push({name: 'chat', params: item})
+        .catch(() => {})
     }
   }
 }
