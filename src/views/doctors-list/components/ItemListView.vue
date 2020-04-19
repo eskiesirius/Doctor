@@ -31,11 +31,7 @@
                         </div>
 
                         <div class="my-6">
-                            <h5 class="font-bold text-center">${{ item.price }}</h5>
-                            <span class="text-grey flex items-start justify-center mt-1" v-if="item.free_shipping">
-                                <feather-icon icon="ShoppingCartIcon" svgClasses="w-4 h-4" />
-                                <span class="text-sm ml-2">Free Shipping</span>
-                            </span>
+                            <h5 class="font-bold text-center">{{ item.specialty }}</h5>
                         </div>
 
                         <!-- SLOT: ACTION BUTTONS -->

@@ -72,7 +72,8 @@
 
                         <!-- Specialization -->
                         <h6 class="font-bold mb-4">Specialization</h6>
-                        <ais-hierarchical-menu :attributes="algoliaCategories">
+                        <ais-hierarchical-menu :attributes="algoliaCategories"
+                        :limit="limit">
                             <div slot-scope="{
                               items,
                               refine,
@@ -170,7 +171,7 @@
                                                     <div
                                                         class="item-view-secondary-action-btn bg-primary p-3 flex flex-grow items-center justify-center text-white cursor-pointer"
                                                         @click="chatDoctor(item)">
-                                                        <feather-icon icon="ShoppingBagIcon" svgClasses="h-4 w-4" />
+                                                        <feather-icon icon="MailIcon" svgClasses="h-4 w-4" />
                                                         <span class="text-sm font-semibold ml-2" >ASK FOR CONSULATION</span>
                                                     </div>
                                                 </div>
@@ -198,7 +199,7 @@
                                             <div
                                                 class="item-view-secondary-action-btn bg-primary p-3 rounded-lg flex flex-grow items-center justify-center text-white cursor-pointer"
                                                 @click="chatDoctor(item)">
-                                                <feather-icon icon="ShoppingBagIcon" svgClasses="h-4 w-4" />
+                                                <feather-icon icon="MailIcon" svgClasses="h-4 w-4" />
                                                 <span class="text-sm font-semibold ml-2">ASK FOR CONSULATION</span>
                                             </div>
                                         </template>
@@ -281,22 +282,13 @@ export default {
         'FZDSPBFJ54',
         '959171d9ff6aed944aa6ad72971b5ede'
       ),
+      limit: 70,
       // Filter Sidebar
       isFilterSidebarActive: true,
       clickNotClose: true,
       currentItemView: 'item-grid-view',
-      numericItems: [
-        { label: 'All' },
-        { label: '<= $10', end: 10 },
-        { label: '$10 - $100', start: 10, end: 100 },
-        { label: '$100 - $500', start: 100, end: 500 },
-        { label: '>= $500', start: 500 }
-      ],
       algoliaCategories: [
-        'hierarchicalCategories.lvl0',
-        'hierarchicalCategories.lvl1',
-        'hierarchicalCategories.lvl2',
-        'hierarchicalCategories.lvl3'
+        'specialty',
       ]
     }
   },
