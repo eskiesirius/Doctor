@@ -82,7 +82,7 @@ export default {
   },
   data () {
     return {
-      image: this.$store.state.AppActiveUser.photoURL,
+      image: this.$store.state.AppActiveUser.image,
       bio: this.$store.state.AppActiveUser.about,
       name: '',
       email: '',

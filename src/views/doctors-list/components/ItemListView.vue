@@ -60,13 +60,13 @@ export default{
     isInCart () {
       return (itemId) => this.$store.getters['eCommerce/isInCart'](itemId)
     },
-    isInWishList () {
-      return (itemId) => this.$store.getters['eCommerce/isInWishList'](itemId)
+    isInFavoriteList () {
+      return (itemId) => this.$store.getters['doctors_list/isInFavoriteList'](itemId)
     }
   },
   methods: {
-    toggleItemInWishList (item) {
-      this.$store.dispatch('eCommerce/toggleItemInWishList', item)
+    toggleItemInFavoriteList (item) {
+      this.$store.dispatch('doctors_list/toggleItemInFavoriteList', item)
     },
     additemInCart (item) {
       this.$store.dispatch('eCommerce/additemInCart', item)
@@ -75,7 +75,7 @@ export default{
       this.isInCart(item.objectID) ? this.$router.push('/apps/eCommerce/checkout').catch(() => {}) : this.additemInCart(item)
     },
     navigate_to_detail_view () {
-      this.$router.push({name: 'ecommerce-item-detail-view', params: {item_id: this.item.objectID }})
+      this.$router.push({name: 'doctors-detail-view', params: {uuid: this.item.uuid }})
         .catch(() => {})
     }
   }

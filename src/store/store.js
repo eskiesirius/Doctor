@@ -25,6 +25,7 @@ Vue.use(Vuex)
 import moduleAuth from './auth/moduleAuth.js'
 import moduleECommerce from './eCommerce/moduleECommerce.js'
 import moduleUserSettings from './settings/moduleUserSettings.js'
+import moduleDoctorsList from './doctors-list/moduleDoctorsList.js'
 
 
 export default new Vuex.Store({
@@ -39,7 +40,8 @@ export default new Vuex.Store({
     // email: moduleEmail,
     auth: moduleAuth,
     eCommerce: moduleECommerce,
-    user_settings: moduleUserSettings
+    user_settings: moduleUserSettings,
+    doctors_list: moduleDoctorsList,
   },
   strict: process.env.NODE_ENV !== 'production'
 })

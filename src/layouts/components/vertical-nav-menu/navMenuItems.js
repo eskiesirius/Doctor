@@ -55,11 +55,31 @@ export default [
     i18n: 'Menu',
     items: [
       {
-        url: '/doctors',
-        slug: 'doctors',
+        url: null,
         name: 'Doctors',
         icon: 'UsersIcon',
-        i18n: 'Doctors'
+        i18n: 'Doctors',
+        submenu: [
+          {
+            url: '/doctors',
+            slug: 'doctors',
+            name: 'List',
+            i18n: 'List',
+          },
+          {
+            url: '/doctors/favorite-list',
+            slug: 'favorite-list',
+            name: 'Favorites',
+            i18n: 'Favorites',
+          }
+        ]
+      },
+      {
+        url: '/chat',
+        name: 'Chat',
+        slug: 'chat',
+        icon: 'MessageSquareIcon',
+        i18n: 'Chat'
       },
       {
         url: '/settings',

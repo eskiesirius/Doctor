@@ -44,7 +44,7 @@ export default{
   },
   methods: {
     navigate_to_detail_view () {
-      this.$router.push({name: 'ecommerce-item-detail-view', params: {item_id: this.item.objectID }})
+      this.$router.push({name: 'doctors-detail-view', params: {uuid: this.item.uuid }})
         .catch(() => {})
     }
   }

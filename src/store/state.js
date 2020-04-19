@@ -17,7 +17,6 @@ import themeConfig, { colors } from '@/../themeConfig.js'
 // *From Auth - Data will be received from auth provider
 const userDefaults = {
   about       : 'Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.',
-  photoURL    : require('@/assets/images/portrait/small/avatar-s-11.jpg'), // From Auth
   status      : 'online',
 }
 

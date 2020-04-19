@@ -81,6 +81,48 @@ const router = new Router({
           }
         },
         {
+          path: '/doctors/:uuid/details',
+          name: 'doctors-detail-view',
+          component: () => import('./views/doctors-list/DoctorsDetailView.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Doctors', url:'/doctors'},
+              { title: 'Doctor Details', active: true }
+            ],
+            parent: 'doctors',
+            pageTitle: 'Doctor Details',
+            rule: 'regular'
+          }
+        },
+        {
+          path: '/doctors/favorite-list',
+          name: 'doctors-favorite-list',
+          component: () => import('./views/doctors-list/DoctorsFavoriteList.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Doctors', url:'/doctors'},
+              { title: 'Favorite List', active: true }
+            ],
+            pageTitle: 'Favorite List',
+            rule: 'regular'
+          }
+        },
+        {
+          path: '/chat',
+          name: 'chat',
+          component: () => import('@/views/chat/Chat.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Chat', active: true }
+            ],
+            pageTitle: 'Chat',
+            rule: 'regular'
+          }
+        },
+        {
           path: '/settings',
           name: 'settings',
           component: () => import('@/views/pages/user-settings/UserSettings.vue'),
@@ -113,7 +155,7 @@ const router = new Router({
         },
         {
           path: '/apps/chat',
-          name: 'chat',
+          name: 'chat-test',
           component: () => import('./views/apps/chat/Chat.vue'),
           meta: {
             rule: 'regular',
