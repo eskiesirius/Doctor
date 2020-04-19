@@ -94,7 +94,7 @@
                       <vs-button
                         class="mr-4 mb-4"
                         icon-pack="feather"
-                        icon="icon-shopping-cart"
+                        icon="icon-mail"
                         @click="chatDoctor(item_data)">
                         ASK FOR CONSULTATION
                       </vs-button>
@@ -366,7 +366,10 @@ export default{
           this.item_data = content
         }
       })
-
+    },
+    chatDoctor(item){
+        this.$router.push({name: 'chat', params: item})
+        .catch(() => {})
     }
   },
   created () {
