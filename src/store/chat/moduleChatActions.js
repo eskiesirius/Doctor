@@ -26,6 +26,12 @@ export default {
     })
   },
 
+  setAppointment({ commit, dispatch }, payload){
+    return new Promise((resolve, reject) => {
+      dispatch('sendChatMessage',payload)
+    })
+  },
+
   addContact({ commit },payload){
     return new Promise((resolve, reject) => {
       axios.post('/api/apps/chat/chat-contacts', {payload})

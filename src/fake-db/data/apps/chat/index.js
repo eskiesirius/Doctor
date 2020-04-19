@@ -144,10 +144,14 @@ const data = {
       isPinned: false,
       msg: [
         {
-          textContent: 'Hi',
+          textContent: '',
           time: 'Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)',
           isSent: true,
-          isSeen: true
+          isSeen: true,
+          isAppointment: true,
+          title: 'Test Appointment',
+          url: 'http://www.facebook.com/isuki',
+          date: 'January 30, 2020 4:10 AM'
         },
         {
           textContent: 'Hello. How can I help You?',

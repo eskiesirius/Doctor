@@ -8,7 +8,7 @@
             </div>
             <h6>{{ userDetails.name }}</h6>
             <vs-spacer></vs-spacer>
-            <feather-icon icon="StarIcon" class="cursor-pointer" :svgClasses="[{'text-warning stroke-current': isPinnedLocal}, 'w-6', 'h-6']" @click.stop="isPinnedLocal = !isPinnedLocal"></feather-icon>
+            <vs-button color="success" @click="setAppointment">Set Appointment</vs-button>
         </vs-navbar>
     </div>
 </template>
@@ -77,6 +77,9 @@ export default {
   methods: {
     getUserStatus (isActiveUser) {
       return isActiveUser ? this.$store.state.AppActiveUser.status : this.userDetails.status
+    },
+    setAppointment() {
+      this.$emit('clicked')
     }
   }
 }

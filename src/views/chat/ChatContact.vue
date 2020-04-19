@@ -6,7 +6,7 @@
         <div class="contact__container w-full flex items-center justify-between overflow-hidden">
             <div class="contact__info flex flex-col truncate w-5/6">
                 <h5 class="font-semibold" :class="{'text-white': isActiveChatUser}">{{ contact.name }}</h5>
-                <span class="truncate">{{ showLastMsg ? $store.getters['chat/chatLastMessaged'](contact.uuid).textContent : contact.about }}</span>
+                <span class="truncate">{{ getLastMessage }}</span>
             </div>
 
             <div class="chat__contact__meta flex self-start flex-col items-end w-1/6">
@@ -25,6 +25,18 @@ export default {
     lastMessaged     : { type: String,  default : '' },
     showLastMsg      : { type: Boolean, default: false },
     unseenMsg        : { type: Number,  default : 0 }
+  },
+  computed: {
+    getLastMessage() {
+        if (!this.showLastMsg) {
+            return this.contact.about
+        }
+
+        if (this.$store.getters['chat/chatLastMessaged'](this.contact.uuid).isAppointment)
+            return 'Appointment Sent'
+
+        return this.$store.getters['chat/chatLastMessaged'](this.contact.uuid).textContent
+    }
   }
 }
 </script>

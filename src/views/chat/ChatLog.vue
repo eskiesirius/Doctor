@@ -26,9 +26,24 @@
                     <div class="mr-16" v-if="!(!hasSentPreviousMsg(chatData.msg[index-1].isSent, msg.isSent) || !isSameDay(msg.time, chatData.msg[index-1].time))"></div>
                 </template>
 
-                <div class="msg break-words relative shadow-md rounded py-3 px-4 mb-2 rounded-lg max-w-sm" :class="{'bg-primary-gradient text-white': msg.isSent, 'border border-solid border-transparent bg-white': !msg.isSent}">
-                    <span>{{ msg.textContent }}</span>
-                </div>
+                <template v-if="msg.isAppointment">
+                  <vx-card
+                  :title="msg.title"
+                  title-color="success"
+                  subtitle-color="warning"
+                  :subtitle="msg.date">
+                  <p class="mb-3">Hi! I would like to set an appointment with you doc.</p>
+                  <div class="flex justify-between flex-wrap">
+                    <vs-button class="mt-4 mr-2 shadow-lg" type="gradient" color="#7367F0" gradient-color-secondary="#CE9FFC">Pay to Finalize Appointment</vs-button>
+                  </div>
+                </vx-card>
+                </template>
+                <template v-else>
+                  <div class="msg break-words relative shadow-md rounded py-3 px-4 mb-2 rounded-lg max-w-sm" :class="{'bg-primary-gradient text-white': msg.isSent, 'border border-solid border-transparent bg-white': !msg.isSent}">
+                      <span>{{ msg.textContent }}</span>
+                  </div>
+                </template>
+                
             </div>
         </div>
     </div>
@@ -44,6 +59,7 @@ export default{
   },
   computed: {
     chatData () {
+      console.log(this.$store.getters['chat/chatDataOfUser'](this.userId))
       return this.$store.getters['chat/chatDataOfUser'](this.userId)
     },
     activeUserImg () {

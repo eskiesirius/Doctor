@@ -45,7 +45,7 @@
         <div class="chat__bg no-scroll-content chat-content-area border border-solid d-theme-border-grey-light border-t-0 border-r-0 border-b-0" :class="{'sidebar-spacer--wide': clickNotClose, 'flex items-center justify-center': activeChatUser === null}">
             <template v-if="activeChatUser">
                 <div class="chat__navbar">
-                    <chat-navbar :isSidebarCollapsed="!clickNotClose" :user-id="activeChatUser" :isPinnedProp="isChatPinned" @openContactsSidebar="toggleChatSidebar(true)" @showProfileSidebar="showProfileSidebar" @toggleIsChatPinned="toggleIsChatPinned"></chat-navbar>
+                    <chat-navbar :isSidebarCollapsed="!clickNotClose" :user-id="activeChatUser" :isPinnedProp="isChatPinned" @openContactsSidebar="toggleChatSidebar(true)" @showProfileSidebar="showProfileSidebar" @toggleIsChatPinned="toggleIsChatPinned" @clicked="openDialog"></chat-navbar>
                 </div>
                 <component :is="scrollbarTag" class="chat-content-scroll-area border border-solid d-theme-border-grey-light" :settings="settings" ref="chatLogPS" :key="$vs.rtl">
                     <div class="chat__log" ref="chatLog">
@@ -64,6 +64,20 @@
                 </div>
             </template>
         </div>
+
+        <vs-prompt
+        class="calendar-event-dialog"
+        title="Set Appointment"
+        accept-text= "Set Appointment"
+        :is-valid="validForm"
+        :active.sync="activePromptSetAppointment"
+        @accept="setAppointment">
+          <vs-input name="event-name" v-validate="'required'" class="w-full" label-placeholder="Event Title" v-model="title"></vs-input>
+          <div class="my-4">
+              <flat-pickr :config="configdateTimePicker" name="start-date" class="w-full" v-model="startDate" :disabled="disabledFrom" />
+          </div>
+          <vs-input name="event-url" v-validate="'url'" class="w-full mt-6" label-placeholder="Event URL" v-model="url" :color="!errors.has('event-url') ? 'success' : 'danger'"></vs-input>
+        </vs-prompt>
     </div>
 </template>
 
@@ -74,6 +88,11 @@ import ChatNavbar          from './ChatNavbar.vue'
 import UserProfile         from './UserProfile.vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import moduleChat          from '@/store/chat/moduleChat.js'
+import Datepicker          from 'vuejs-datepicker'
+import { en, he }          from 'vuejs-datepicker/src/locale'
+import flatPickr           from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
+
 
 export default {
   data () {
@@ -92,7 +111,17 @@ export default {
       },
       clickNotClose        : true,
       isChatSidebarActive  : true,
-      isLoggedInUserProfileView: false
+      isLoggedInUserProfileView: false,
+      activePromptSetAppointment: false,
+      url: '',
+      title: '',
+      startDate: '',
+      disabledFrom: false,
+      lang: en,
+      configdateTimePicker: {
+        enableTime: true,
+        dateFormat: 'F d, Y h:i K'
+      }
     }
   },
   watch: {
@@ -150,9 +179,48 @@ export default {
     },
     windowWidth () {
       return this.$store.state.windowWidth
-    }
+    },
+    validForm () {
+      return this.title !== '' && this.startDate !== '' && new Date() - Date.parse(this.startDate) <= 0 && !this.errors.has('event-url')
+    },
+    disabledDatesTo () {
+      return { to: new Date(this.startDate) }
+    },
   },
   methods: {
+    setAppointment(){
+      const payload = {
+        'isPinned': this.isChatPinned,
+        'msg': {
+          'textContent'   : '',
+          'time'          : String(new Date()),
+          'isSent'        : true,
+          'isSeen'        : false,
+          'isAppointment' : true,
+          'title'         : this.title,
+          'date'          : this.startDate,
+          'url'           : this.url
+        },
+        'id': this.activeChatUser
+      }
+      this.$store.dispatch('chat/setAppointment', payload)
+
+      const scroll_el = this.$refs.chatLogPS.$el || this.$refs.chatLogPS
+      scroll_el.scrollTop = this.$refs.chatLog.scrollHeight
+    },
+    openDialog() {
+      this.disabledFrom = false
+      this.addNewEventDialog(new Date())
+    },
+    addNewEventDialog (date) {
+      this.clearFields()
+      this.startDate = date
+      this.endDate = date
+      this.activePromptSetAppointment = true
+    },
+    clearFields () {
+      this.title = this.endDate = this.url = ''
+    },
     getUserStatus (isActiveUser) {
       // return "active"
       return isActiveUser ? this.$store.state.AppActiveUser.status : this.contacts[this.activeChatUser].status
@@ -219,7 +287,8 @@ export default {
     ChatContact,
     UserProfile,
     ChatNavbar,
-    ChatLog
+    ChatLog,
+    flatPickr
   },
   created () {
     this.$store.registerModule('chat', moduleChat)
