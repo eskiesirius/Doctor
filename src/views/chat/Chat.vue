@@ -237,6 +237,12 @@ export default {
         await this.$store.dispatch('chat/fetchChats', this.activeThread)
       }
 
+      Echo.private('chat.' + this.activeThread.uuid)
+      .listen('.App\\Events\\Conversation\\MessageSent',(e) => {
+        console.log(e);
+        this.$store.dispatch('chat/addChat',e.conversation)
+      });
+
       // if (this.$store.getters['chat/chatDataOfUser'](this.activeThread)) {
       //   this.$store.dispatch('chat/markSeenAllMessages', contactId)
       // }

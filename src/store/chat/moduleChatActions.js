@@ -55,8 +55,8 @@ export default {
         .then(response => {
           let newThread = []
           newThread[response.data[0].thread_id] = response.data
-          console.log(response.data)
-          commit('SEND_CHAT_MESSAGE',{payload: response.data, thread: newThread})
+
+          // commit('SEND_CHAT_MESSAGE',{payload: response.data, thread: newThread})
 
           if (payload.thread.doctor_id != null)
             resolve({isNew: false})
@@ -64,6 +64,14 @@ export default {
           resolve({isNew: true, thread_id: response.data[0].thread_id})
         })
         .catch((error) => { reject(error) })
+    })
+  },
+
+  async addChat({commit}, payload) {
+    return new Promise((resolve, reject) => {
+      console.log(payload)
+      commit('SEND_CHAT_MESSAGE',{payload: [payload], thread: []})
+      resolve()
     })
   },
 
