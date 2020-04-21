@@ -34,25 +34,45 @@ export default {
 
   addContact({ commit },payload){
     return new Promise((resolve, reject) => {
-      axios.post('/api/apps/chat/chat-contacts', {payload})
-        .then((response) => {
-          commit('UPDATE_CONTACTS', response.data)
-          resolve(response)
+      commit('UPDATE_CONTACTS', payload)
+      resolve(response)
+    })
+  },
+
+  // API CALLS
+  sendChatMessage ({ getters, commit, dispatch, rootState }, payload) {
+    const data = {
+      'message'           : payload.message,
+      'isAppointment'     : payload.isAppointment,
+      'title'             : payload.title,
+      'appointment_date'  : payload.appointment_date,
+      'doctor_id'         : payload.thread.doctor_id == null ? payload.thread.id : payload.thread.doctor_id,
+      'patient_id'        : payload.thread.patient_id == null ? rootState.AppActiveUser.id : payload.thread.patient_id
+    }
+
+    return new Promise((resolve, reject) => {
+      axios.post('/api/chat/message', data)
+        .then(response => {
+          let newThread = []
+          newThread[response.data[0].thread_id] = response.data
+
+          commit('SEND_CHAT_MESSAGE',{payload: response.data, thread: newThread})
+
+          if (payload.thread.doctor_id != null)
+            resolve({isNew: false})
+          
+          resolve({isNew: true, thread_id: response.data[0].thread_id})
         })
         .catch((error) => { reject(error) })
     })
   },
 
-  // API CALLS
-  sendChatMessage ({ getters, commit, dispatch }, payload) {
+  fetchThreadByConversation({commit}, thread_id) {
     return new Promise((resolve, reject) => {
-      axios.post('/api/apps/chat/msg', {payload})
-        .then((response) => {
-          payload.chatData = getters.chatDataOfUser(payload.id)
+      axios.get('/api/conversation/' + thread_id + '/thread')
+        .then(response => {
 
-          if (!payload.chatData) { dispatch('fetchChatContacts') }
-          commit('SEND_CHAT_MESSAGE', payload)
-          resolve(response)
+          resolve(response.data)
         })
         .catch((error) => { reject(error) })
     })
@@ -71,9 +91,15 @@ export default {
   },
 
   // Get chat-contacts from server. Also change in store
-  fetchChatContacts ({ commit }) {
+  fetchChatContacts ({ getters, commit }) {
     return new Promise((resolve, reject) => {
-      axios.get('/api/apps/chat/chat-contacts', {params: {q: ''}})
+      // axios.get('/api/apps/chat/chat-contacts', {params: {q: ''}})
+      //   .then((response) => {
+      //     commit('UPDATE_CHAT_CONTACTS', response.data)
+      //     resolve(response)
+      //   })
+      //   .catch((error) => { reject(error) })
+      axios.get('/api/chat/message')
         .then((response) => {
           commit('UPDATE_CHAT_CONTACTS', response.data)
           resolve(response)
@@ -83,11 +109,14 @@ export default {
   },
 
   // Get chats from server. Also change in store
-  fetchChats ({ commit }) {
+  fetchChats ({ commit }, thread) {
     return new Promise((resolve, reject) => {
-      axios.get('/api/apps/chat/chats')
+      axios.get('/api/chat/message/' + thread.uuid)
         .then((response) => {
-          commit('UPDATE_CHATS', response.data)
+          let newThread = []
+          newThread[thread.id] = response.data
+          
+          commit('UPDATE_CHATS', newThread)
           resolve(response)
         })
         .catch((error) => { reject(error) })

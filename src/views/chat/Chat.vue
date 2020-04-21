@@ -22,8 +22,8 @@
                 <div class="chat__chats-list mb-8">
                     <h3 class="text-primary mb-5 px-4">Chats</h3>
                     <ul class="chat__active-chats bordered-items">
-                        <li class="cursor-pointer" v-for="(contact, index) in chatContacts" :key="index" @click="updateActiveChatUser(contact.uuid)">
-                            <chat-contact showLastMsg :contact="contact" :lastMessaged="chatLastMessaged(contact.uuid).time" :unseenMsg="chatUnseenMessages(contact.uuid)" :isActiveChatUser="isActiveChatUser(contact.uuid)"></chat-contact>
+                        <li class="cursor-pointer" v-for="(contact, index) in chatContacts" :key="index" @click="updateActiveThread(contact)">
+                            <chat-contact showLastMsg :contact="contact.user" :lastMessaged="chatLastMessaged(contact.uuid).time" :unseenMsg="chatUnseenMessages(contact.uuid)" :isActiveThread="isActiveThread(contact.uuid)"></chat-contact>
                         </li>
                     </ul>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="chat__contacts">
                     <h3 class="text-primary mb-5 px-4">Contacts</h3>
                     <ul class="chat__contacts bordered-items">
-                        <li class="cursor-pointer" v-for="contact in contacts" :key="contact.uuid" @click="updateActiveChatUser(contact.uuid)">
+                        <li class="cursor-pointer" v-for="contact in contacts" :key="contact.uuid" @click="updateActiveThread(contact)">
                             <chat-contact :contact="contact"></chat-contact>
                         </li>
                     </ul>
@@ -42,14 +42,14 @@
         </vs-sidebar>
 
         <!-- RIGHT COLUMN -->
-        <div class="chat__bg no-scroll-content chat-content-area border border-solid d-theme-border-grey-light border-t-0 border-r-0 border-b-0" :class="{'sidebar-spacer--wide': clickNotClose, 'flex items-center justify-center': activeChatUser === null}">
-            <template v-if="activeChatUser">
+        <div class="chat__bg no-scroll-content chat-content-area border border-solid d-theme-border-grey-light border-t-0 border-r-0 border-b-0" :class="{'sidebar-spacer--wide': clickNotClose, 'flex items-center justify-center': activeThread === null}">
+            <template v-if="activeThread">
                 <div class="chat__navbar">
-                    <chat-navbar :isSidebarCollapsed="!clickNotClose" :user-id="activeChatUser" :isPinnedProp="isChatPinned" @openContactsSidebar="toggleChatSidebar(true)" @showProfileSidebar="showProfileSidebar" @toggleIsChatPinned="toggleIsChatPinned" @clicked="openDialog"></chat-navbar>
+                    <chat-navbar :isSidebarCollapsed="!clickNotClose" :thread="activeThread" @openContactsSidebar="toggleChatSidebar(true)" @showProfileSidebar="showProfileSidebar" @toggleIsChatPinned="toggleIsChatPinned" @clicked="openDialog"></chat-navbar>
                 </div>
                 <component :is="scrollbarTag" class="chat-content-scroll-area border border-solid d-theme-border-grey-light" :settings="settings" ref="chatLogPS" :key="$vs.rtl">
                     <div class="chat__log" ref="chatLog">
-                        <chat-log :userId="activeChatUser" v-if="activeChatUser"></chat-log>
+                        <chat-log :thread="activeThread" v-if="activeThread"></chat-log>
                     </div>
                 </component>
                 <div class="chat__input flex p-4 bg-white">
@@ -101,7 +101,7 @@ export default {
       isHidden             : false,
       searchContact        : '',
       activeProfileSidebar : false,
-      activeChatUser       : null,
+      activeThread       : null,
       userProfileId        : -1,
       typedMessage         : '',
       isChatPinned         : false,
@@ -131,7 +131,8 @@ export default {
   },
   computed: {
     chatLastMessaged () {
-      return (userId) => this.$store.getters['chat/chatLastMessaged'](userId)
+      // return (userId) => this.$store.getters['chat/chatLastMessaged'](userId);
+      return (userId) => userId;
     },
     chatUnseenMessages () {
       return (userId) => {
@@ -158,6 +159,7 @@ export default {
       }
     },
     chatContacts () {
+      console.log(this.$store.getters['chat/chatContacts'])
       return this.$store.getters['chat/chatContacts']
     },
     contacts () {
@@ -174,8 +176,13 @@ export default {
     scrollbarTag () {
       return this.$store.getters.scrollbarTag
     },
-    isActiveChatUser () {
-      return (userId) => userId === this.activeChatUser
+    isActiveThread () {
+      return (userId) => {
+        if (this.activeThread != null)
+          return userId === this.activeThread.uuid
+
+        return false
+      }
     },
     windowWidth () {
       return this.$store.state.windowWidth
@@ -188,22 +195,18 @@ export default {
     },
   },
   methods: {
-    setAppointment(){
+    async setAppointment(){
       const payload = {
-        'isPinned': this.isChatPinned,
-        'msg': {
-          'textContent'   : '',
-          'time'          : String(new Date()),
-          'isSent'        : true,
-          'isSeen'        : false,
-          'isAppointment' : true,
-          'title'         : this.title,
-          'date'          : this.startDate,
-          'url'           : this.url
-        },
-        'id': this.activeChatUser
+        'message'           : '',
+        'time'              : String(new Date()), 
+        'isSeen'            : false,
+        'thread'            : this.activeThread,
+        'isAppointment'     : true,
+        'title'             : this.title,
+        'appointment_date'  : new Date(this.startDate)
       }
-      this.$store.dispatch('chat/setAppointment', payload)
+
+      await this.$store.dispatch('chat/setAppointment', payload)
 
       const scroll_el = this.$refs.chatLogPS.$el || this.$refs.chatLogPS
       scroll_el.scrollTop = this.$refs.chatLog.scrollHeight
@@ -223,46 +226,51 @@ export default {
     },
     getUserStatus (isActiveUser) {
       // return "active"
-      return isActiveUser ? this.$store.state.AppActiveUser.status : this.contacts[this.activeChatUser].status
+      return isActiveUser ? this.$store.state.AppActiveUser.status : this.contacts[this.activeThread].status
     },
     closeProfileSidebar (value) {
       this.activeProfileSidebar = value
     },
-    updateActiveChatUser (contactId) {
-      this.activeChatUser = contactId
-      if (this.$store.getters['chat/chatDataOfUser'](this.activeChatUser)) {
-        this.$store.dispatch('chat/markSeenAllMessages', contactId)
+    async updateActiveThread (thread) {
+      this.activeThread = thread
+
+      if (this.$store.getters['chat/chatDataOfUser'](this.activeThread.id) == null){
+        await this.$store.dispatch('chat/fetchChats', this.activeThread)
       }
-      const chatData = this.$store.getters['chat/chatDataOfUser'](this.activeChatUser)
-      if (chatData) this.isChatPinned = chatData.isPinned
-      else this.isChatPinned = false
+
+      // if (this.$store.getters['chat/chatDataOfUser'](this.activeThread)) {
+      //   this.$store.dispatch('chat/markSeenAllMessages', contactId)
+      // }
+
       this.toggleChatSidebar()
       this.typedMessage = ''
-    },
-    chat(user){
-      if (this.$store.getters['chat/contact'](user.uuid) == null) {
-        this.$store.dispatch('chat/addContact', user)
-      }
     },
     showProfileSidebar (userId, openOnLeft = false) {
       this.userProfileId = userId
       this.isLoggedInUserProfileView = openOnLeft
       this.activeProfileSidebar = !this.activeProfileSidebar
     },
-    sendMsg () {
+    async sendMsg () {
       if (!this.typedMessage) return
       const payload = {
-        'isPinned': this.isChatPinned,
-        'msg': {
-          'textContent' : this.typedMessage,
-          'time'        : String(new Date()),
-          'isSent'      : true,
-          'isSeen'      : false
-        },
-        'id': this.activeChatUser
+        'message'           : this.typedMessage,
+        'time'              : String(new Date()), 
+        'isSeen'            : false,
+        'thread'            : this.activeThread,
+        'isAppointment'     : false,
+        'title'             : null,
+        'appointment_date'  : null
       }
-      this.$store.dispatch('chat/sendChatMessage', payload)
+
       this.typedMessage = ''
+      let result = await this.$store.dispatch('chat/sendChatMessage', payload)
+
+      if (result.isNew) {
+        await this.$store.dispatch('chat/fetchChatContacts')
+        let thread = await this.$store.dispatch('chat/fetchThreadByConversation', Number(result.thread_id))
+        console.log(thread)
+        this.openChatForDoctor(thread.user)
+      }
 
       const scroll_el = this.$refs.chatLogPS.$el || this.$refs.chatLogPS
       scroll_el.scrollTop = this.$refs.chatLog.scrollHeight
@@ -280,6 +288,15 @@ export default {
     toggleChatSidebar (value = false) {
       if (!value && this.clickNotClose) return
       this.isChatSidebarActive = value
+    },
+    openChatForDoctor(user) {
+      console.log(this.$store.getters['chat/chatUser'](user.uuid))
+      if (this.$store.getters['chat/chatUser'](user.uuid) != null) {
+        this.updateActiveThread(this.$store.getters['chat/chatUser'](user.uuid))
+        return
+      }
+
+      this.activeThread = user
     }
   },
   components: {
@@ -290,23 +307,21 @@ export default {
     ChatLog,
     flatPickr
   },
-  created () {
+  async created () {
     this.$store.registerModule('chat', moduleChat)
-    this.$store.dispatch('chat/fetchContacts')
-    this.$store.dispatch('chat/fetchChatContacts')
-    this.$store.dispatch('chat/fetchChats')
+    await this.$store.dispatch('chat/fetchChatContacts')
+
+    if (this.$route.params.uuid) {
+      this.openChatForDoctor(this.$route.params)
+    }
+
     this.setSidebarWidth()
   },
   beforeDestroy () {
     this.$store.unregisterModule('chat')
   },
   mounted () {
-    this.$store.dispatch('chat/setChatSearchQuery', '')
-
-    if (this.$route.params.uuid) {
-      this.chat(this.$route.params)
-      this.updateActiveChatUser(this.$route.params.uuid)
-    }
+    // this.$store.dispatch('chat/setChatSearchQuery', '')
   }
 }
 

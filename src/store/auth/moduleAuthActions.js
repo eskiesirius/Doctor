@@ -333,11 +333,11 @@ export default {
   },
   registerUserJWT ({ commit }, payload) {
 
-    const { name, email, password, password_confirmation } = payload.userDetails
+    const { name, email, password, password_confirmation, role } = payload.userDetails
 
     return new Promise((resolve, reject) => {
 
-      jwt.registerUser(name, email, password, password_confirmation)
+      jwt.registerUser(name, email, password, password_confirmation, role)
         .then(response => {
           // Redirect User
           router.push({ name: 'login' }).catch(err => {})

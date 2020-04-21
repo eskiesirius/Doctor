@@ -19,15 +19,27 @@ export default {
   },
 
   // API AFTER
-  SEND_CHAT_MESSAGE (state, payload) {
-    if (payload.chatData) {
+  SEND_CHAT_MESSAGE (state, {payload, thread}) {
+    let data = {
+      'thread_id'         : payload[0].thread_id,
+      'user_id'           : payload[0].user_id,
+      'message'           : payload[0].message,
+      'isAppointment'     : payload[0].isAppointment,
+      'isSeen'            : payload[0].isSeen,
+      'title'             : payload[0].title,
+      'appointment_date'  : payload[0].appointment_date,
+      'created_at'        : payload[0].created_at,
+    }
+
+    if (state.chats[Object.keys(state.chats).find(key => Number(key) === Number(payload[0].thread_id))]) {
+
       // If there's already chat. Push msg to existing chat
-      state.chats[Object.keys(state.chats).find(key => String(key) === String(payload.id))].msg.push(payload.msg)
+      state.chats[Object.keys(state.chats).find(key => Number(key) === Number(payload[0].thread_id))].push(data)
+      console.log('old')
     } else {
       // Create New chat and add msg
-      const chatId = payload.id
-      Vue.set(state.chats, [chatId], { isPinned: payload.isPinned,
-        msg: [payload.msg] })
+      state.chats = thread
+      console.log('new')
     }
   },
   UPDATE_CONTACTS (state, contacts) {
@@ -35,6 +47,7 @@ export default {
   },
   UPDATE_CHAT_CONTACTS (state, chatContacts) {
     state.chatContacts = chatContacts
+    console.log(state.chatContacts)
   },
   UPDATE_CHATS (state, chats) {
     state.chats = chats
@@ -48,7 +61,7 @@ export default {
     })
   },
   TOGGLE_IS_PINNED (state, payload) {
-    state.chats[Object.keys(state.chats).find(key => Number(key) === payload.id)].isPinned = payload.value
+    state.chats[Object.keys(state.chats).find(key => String(key) === payload.id)].isPinned = payload.value
   }
 }
 

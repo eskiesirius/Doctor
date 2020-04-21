@@ -16,7 +16,7 @@ import themeConfig, { colors } from '@/../themeConfig.js'
 
 // *From Auth - Data will be received from auth provider
 const userDefaults = {
-  about       : 'Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.',
+  description       : 'Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.',
   status      : 'online',
 }
 

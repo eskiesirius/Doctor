@@ -25,14 +25,15 @@ export default {
   getUserInfo(){
     return axios.get('/api/user')
   },
-  async registerUser (name, email, password, password_confirmation) {
+  async registerUser (name, email, password, password_confirmation, role) {
     await axios.get('sanctum/csrf-cookie')
 
     return axios.post('/register', {
       name,
       email,
       password,
-      password_confirmation
+      password_confirmation,
+      role
     })
   },
   logout(){

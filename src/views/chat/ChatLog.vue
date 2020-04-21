@@ -1,37 +1,37 @@
 <template>
     <div id="component-chat-log" class="m-8" v-if="chatData">
-        <div v-for="(msg, index) in chatData.msg" class="msg-grp-container" :key="index">
+        <div v-for="(chat, index) in chatData" class="msg-grp-container" :key="index">
 
             <!-- If previous msg is older than current time -->
-            <template v-if="chatData.msg[index-1]">
-                <vs-divider v-if="!isSameDay(msg.time, chatData.msg[index-1].time)" class="msg-time">
-                    <span>{{ toDate(msg.time) }}</span>
+            <template v-if="chatData[index-1]">
+                <vs-divider v-if="!isSameDay(chat.created_at, chatData[index-1].created_at)" class="msg-time">
+                    <span>{{ toDate(chat.created_at) }}</span>
                 </vs-divider>
-                <div class="spacer mt-8" v-if="!hasSentPreviousMsg(chatData.msg[index-1].isSent, msg.isSent)"></div>
+                <div class="spacer mt-8" v-if="!hasSentPreviousMsg(isSent(chatData[index-1]), isSent(chat))"></div>
             </template>
 
-            <div class="flex items-start" :class="[{'flex-row-reverse' : msg.isSent}]">
+            <div class="flex items-start" :class="[{'flex-row-reverse' : isSent(chat)}]">
 
-                <template v-if="chatData.msg[index-1]">
-                    <template v-if="(!hasSentPreviousMsg(chatData.msg[index-1].isSent, msg.isSent) || !isSameDay(msg.time, chatData.msg[index-1].time))">
-                        <vs-avatar size="40px" class="border-2 shadow border-solid border-white m-0 flex-shrink-0" :class="msg.isSent ? 'sm:ml-5 ml-3' : 'sm:mr-5 mr-3'" :src="senderImg(msg.isSent)"></vs-avatar>
+                <template v-if="chatData[index-1]">
+                    <template v-if="(!hasSentPreviousMsg(isSent(chatData[index-1]), isSent(chat)) || !isSameDay(chat.time, chatData[index-1].time))">
+                        <vs-avatar size="40px" class="border-2 shadow border-solid border-white m-0 flex-shrink-0" :class="isSent(chat) ? 'sm:ml-5 ml-3' : 'sm:mr-5 mr-3'" :src="senderImg(isSent(chat))"></vs-avatar>
                     </template>
                 </template>
 
                 <template v-if="index == 0">
-                    <vs-avatar size="40px" class="border-2 shadow border-solid border-white m-0 flex-shrink-0" :class="msg.isSent ? 'sm:ml-5 ml-3' : 'sm:mr-5 mr-3'" :src="senderImg(msg.isSent)"></vs-avatar>
+                    <vs-avatar size="40px" class="border-2 shadow border-solid border-white m-0 flex-shrink-0" :class="isSent(chat) ? 'sm:ml-5 ml-3' : 'sm:mr-5 mr-3'" :src="senderImg(isSent(chat))"></vs-avatar>
                 </template>
 
-                <template v-if="chatData.msg[index-1]">
-                    <div class="mr-16" v-if="!(!hasSentPreviousMsg(chatData.msg[index-1].isSent, msg.isSent) || !isSameDay(msg.time, chatData.msg[index-1].time))"></div>
+                <template v-if="chatData[index-1]">
+                    <div class="mr-16" v-if="!(!hasSentPreviousMsg(isSent(chatData[index-1]), isSent(chat)) || !isSameDay(chat.time, chatData[index-1].time))"></div>
                 </template>
 
-                <template v-if="msg.isAppointment">
+                <template v-if="chat.isAppointment">
                   <vx-card
-                  :title="msg.title"
+                  :title="chat.title"
                   title-color="success"
                   subtitle-color="warning"
-                  :subtitle="msg.date">
+                  :subtitle="changeDateFormatFull(chat.appointment_date)">
                   <p class="mb-3">Hi! I would like to set an appointment with you doc.</p>
                   <div class="flex justify-between flex-wrap">
                     <vs-button class="mt-4 mr-2 shadow-lg" type="gradient" color="#7367F0" gradient-color-secondary="#CE9FFC">Pay to Finalize Appointment</vs-button>
@@ -39,8 +39,8 @@
                 </vx-card>
                 </template>
                 <template v-else>
-                  <div class="msg break-words relative shadow-md rounded py-3 px-4 mb-2 rounded-lg max-w-sm" :class="{'bg-primary-gradient text-white': msg.isSent, 'border border-solid border-transparent bg-white': !msg.isSent}">
-                      <span>{{ msg.textContent }}</span>
+                  <div class="msg break-words relative shadow-md rounded py-3 px-4 mb-2 rounded-lg max-w-sm" :class="{'bg-primary-gradient text-white': isSent(chat), 'border border-solid border-transparent bg-white': !isSent(chat)}">
+                      <span>{{ chat.message }}</span>
                   </div>
                 </template>
                 
@@ -52,23 +52,24 @@
 <script>
 export default{
   props: {
-    userId: {
-      type: [ String, Number ],
+    thread: {
+      type: [ String, Number, Object ],
       required: true
     }
   },
   computed: {
     chatData () {
-      console.log(this.$store.getters['chat/chatDataOfUser'](this.userId))
-      return this.$store.getters['chat/chatDataOfUser'](this.userId)
+      console.log(this.thread)
+      console.log(this.$store.getters['chat/chatDataOfUser'](this.thread.id))
+      return this.$store.getters['chat/chatDataOfUser'](this.thread.id)
     },
-    activeUserImg () {
-      return this.$store.state.AppActiveUser.image
+    isSent () { 
+      return (chat) => chat.user_id == this.$store.state.AppActiveUser.id
     },
     senderImg () {
       return (isSentByActiveUser) => {
         if (isSentByActiveUser) return this.$store.state.AppActiveUser.image
-        else return this.$store.getters['chat/contact'](this.userId).image
+        else return this.$store.getters['chat/contact'](this.thread.id).user.image
       }
     },
     hasSentPreviousMsg () {
@@ -90,6 +91,9 @@ export default{
         month: 'short'
       })
       return `${date_obj.getDate()  } ${   monthName}`
+    },
+    changeDateFormatFull(date) {
+      return date;
     },
     scrollToBottom () {
       this.$nextTick(() => {

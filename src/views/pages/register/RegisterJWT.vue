@@ -45,6 +45,20 @@ Author URL: http://www.themeforest.net/user/pixinvent
       v-model="password_confirmation"
       class="w-full mt-6" />
 
+    <div class="flex flex-wrap justify-between my-5 w-full">
+      <ul>
+        <li class="inline-block mr-5">
+          <vs-radio v-model="role" vs-value="admin">admin</vs-radio>
+        </li>
+        <li class="inline-block mr-5">
+          <vs-radio v-model="role" vs-value="doctor">doctor</vs-radio>
+        </li>
+        <li class="inline-block mr-5">
+          <vs-radio v-model="role" vs-value="patient">patient</vs-radio>
+        </li>
+      </ul>
+      <span class="text-danger text-sm">{{ roleErrorMessage }}</span>
+    </div>
     <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>
     <vs-button  type="border" to="/login" class="mt-6">Login</vs-button>
     <vs-button class="float-right mt-6" @click="registerUserJWt">Register</vs-button>
@@ -62,7 +76,9 @@ export default {
       emailErrorMessage: '',
       passwordErrorMessage: '',
       nameErrorMessage: '',
-      isTermsConditionAccepted: true
+      roleErrorMessage: '',
+      isTermsConditionAccepted: true,
+      role: ''
     }
   },
   methods: {
@@ -75,13 +91,15 @@ export default {
           name: this.name,
           email: this.email,
           password: this.password,
-          password_confirmation: this.password_confirmation
+          password_confirmation: this.password_confirmation,
+          role: this.role
         },
       }
       
       this.nameErrorMessage
       this.emailErrorMessage = ''
       this.passwordErrorMessage = ''
+      this.roleErrorMessage = ''
       this.$store.dispatch('auth/registerUserJWT', payload)
         .then(() => { this.$vs.loading.close() })
         .catch(error => {
@@ -96,17 +114,18 @@ export default {
 
           if (error.response.data.errors.name){
             this.nameErrorMessage = error.response.data.errors.name[0]
-            this.isValidFullName = false
           }
 
           if (error.response.data.errors.email){
             this.emailErrorMessage = error.response.data.errors.email[0]
-            this.isValidEmail = false
           }
 
           if (error.response.data.errors.password){
             this.passwordErrorMessage = error.response.data.errors.password[0]
-            this.isValidPassword = false
+          }
+
+          if (error.response.data.errors.role){
+            this.roleErrorMessage = error.response.data.errors.role[0]
           }
         })
     }

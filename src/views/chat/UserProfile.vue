@@ -51,7 +51,7 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 export default {
   props: {
     userId: {
-      type: Number,
+      type: [Number, String, Object],
       required: true
     },
     active: {
@@ -74,14 +74,20 @@ export default {
   },
   computed: {
     chatUser () {
-      return this.$store.getters['chat/chatUser'](this.userId)
+      if (this.$store.getters['chat/chatUser'](this.userId.uuid) != null)
+        return this.$store.getters['chat/chatUser'](this.userId.uuid).user
+
+      if (this.userId.uuid == null)
+        return this.$store.state.AppActiveUser
+
+      return this.userId
     },
     activeLocal: {
       get ()      { return this.active },
       set (value) { this.$emit('closeProfileSidebar', value) }
     },
     about: {
-      get ()      { return this.chatUser.about },
+      get ()      { return this.chatUser.description },
       set (value) { this.$store.dispatch('updateUserInfo', { about: value }) }
     },
     status: {

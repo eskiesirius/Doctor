@@ -12,10 +12,10 @@
 
 export default {
   chatDataOfUser: state => id => {
-    return state.chats[Object.keys(state.chats).find(key => String(key) === String(id))]
+    return state.chats[Object.keys(state.chats).find(key => Number(key) === Number(id))]
   },
   chatContacts: (state, getters) => {
-    const chatContacts = state.chatContacts.filter((contact) => contact.name.toLowerCase().includes(state.chatSearchQuery.toLowerCase()))
+    const chatContacts = state.chatContacts.filter((contact) => contact.user.name.toLowerCase().includes(state.chatSearchQuery.toLowerCase()))
 
     chatContacts.sort((x, y) => {
       const timeX = getters.chatLastMessaged(x.uuid).time
@@ -31,9 +31,9 @@ export default {
     })
   },
   contacts: (state) => state.contacts.filter((contact) => contact.name.toLowerCase().includes(state.chatSearchQuery.toLowerCase())),
-  contact: (state) => contactId => state.contacts.find((contact) => contact.uuid === contactId),
+  contact: (state) => contactId => state.chatContacts.find((contact) => contact.id === contactId),
   chats: (state) => state.chats,
-  chatUser: (state, getters, rootState) => id => state.contacts.find((contact) => contact.uuid === id) || rootState.AppActiveUser,
+  chatUser: (state, getters, rootState) => id => state.chatContacts.find((contact) => contact.user.uuid === id),
 
   chatLastMessaged: (state, getters) => id => {
     if (getters.chatDataOfUser(id)) return getters.chatDataOfUser(id).msg.slice(-1)[0]
@@ -41,12 +41,12 @@ export default {
   },
   chatUnseenMessages: (state, getters) => id => {
     let unseenMsg = 0
-    const chatData = getters.chatDataOfUser(id)
-    if (chatData) {
-      chatData.msg.map((msg) => {
-        if (!msg.isSeen && !msg.isSent) unseenMsg++
-      })
-    }
+    // const chatData = getters.chatDataOfUser(id)
+    // if (chatData) {
+    //   chatData.msg.map((msg) => {
+    //     if (!msg.isSeen && !msg.isSent) unseenMsg++
+    //   })
+    // }
     return unseenMsg
   }
 }
