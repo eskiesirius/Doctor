@@ -59,8 +59,6 @@ export default{
   },
   computed: {
     chatData () {
-      console.log(this.thread)
-      console.log(this.$store.getters['chat/chatDataOfUser'](this.thread.id))
       return this.$store.getters['chat/chatDataOfUser'](this.thread.id)
     },
     isSent () { 

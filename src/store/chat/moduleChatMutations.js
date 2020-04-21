@@ -35,11 +35,9 @@ export default {
 
       // If there's already chat. Push msg to existing chat
       state.chats[Object.keys(state.chats).find(key => Number(key) === Number(payload[0].thread_id))].push(data)
-      console.log('old')
     } else {
       // Create New chat and add msg
       state.chats = thread
-      console.log('new')
     }
   },
   UPDATE_CONTACTS (state, contacts) {
@@ -47,7 +45,6 @@ export default {
   },
   UPDATE_CHAT_CONTACTS (state, chatContacts) {
     state.chatContacts = chatContacts
-    console.log(state.chatContacts)
   },
   UPDATE_CHATS (state, chats) {
     state.chats = chats

@@ -159,7 +159,6 @@ export default {
       }
     },
     chatContacts () {
-      console.log(this.$store.getters['chat/chatContacts'])
       return this.$store.getters['chat/chatContacts']
     },
     contacts () {
@@ -267,9 +266,7 @@ export default {
 
       if (result.isNew) {
         await this.$store.dispatch('chat/fetchChatContacts')
-        let thread = await this.$store.dispatch('chat/fetchThreadByConversation', Number(result.thread_id))
-        console.log(thread)
-        this.openChatForDoctor(thread.user)
+        this.openChatForDoctor(this.activeThread)
       }
 
       const scroll_el = this.$refs.chatLogPS.$el || this.$refs.chatLogPS
@@ -290,7 +287,6 @@ export default {
       this.isChatSidebarActive = value
     },
     openChatForDoctor(user) {
-      console.log(this.$store.getters['chat/chatUser'](user.uuid))
       if (this.$store.getters['chat/chatUser'](user.uuid) != null) {
         this.updateActiveThread(this.$store.getters['chat/chatUser'](user.uuid))
         return
