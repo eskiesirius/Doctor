@@ -35,6 +35,7 @@ export default {
         if (this.$store.getters['chat/chatLastMessaged'](this.contact.uuid).isAppointment)
             return 'Appointment Sent'
 
+        console.log(this.$store.getters['chat/chatLastMessaged'](this.contact.id))
         return this.$store.getters['chat/chatLastMessaged'](this.contact.uuid).textContent
     }
   }

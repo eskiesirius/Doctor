@@ -18,6 +18,7 @@ export default {
     const chatContacts = state.chatContacts.filter((contact) => contact.user.name.toLowerCase().includes(state.chatSearchQuery.toLowerCase()))
 
     chatContacts.sort((x, y) => {
+      console.log(getters.chatLastMessaged(x.uuid))
       const timeX = getters.chatLastMessaged(x.uuid).time
       const timeY = getters.chatLastMessaged(y.uuid).time
       return new Date(timeY) - new Date(timeX)

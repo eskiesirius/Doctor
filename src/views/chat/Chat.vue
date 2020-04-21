@@ -131,8 +131,8 @@ export default {
   },
   computed: {
     chatLastMessaged () {
-      // return (userId) => this.$store.getters['chat/chatLastMessaged'](userId);
-      return (userId) => userId;
+      return (userId) => this.$store.getters['chat/chatLastMessaged'](userId);
+      // return (userId) => userId;
     },
     chatUnseenMessages () {
       return (userId) => {
@@ -243,7 +243,7 @@ export default {
         this.$store.dispatch('chat/addChat',e.conversation)
       });
 
-      // if (this.$store.getters['chat/chatDataOfUser'](this.activeThread)) {
+      // if (this.$store.getters['chat/chatDaatOfUser'](this.activeThread)) {
       //   this.$store.dispatch('chat/markSeenAllMessages', contactId)
       // }
 
@@ -318,12 +318,19 @@ export default {
     }
 
     this.setSidebarWidth()
+
+    Echo.private('thread.' + this.$store.state.AppActiveUser.id)
+      .listen('.App\\Events\\Thread\\ThreadWasCreated',(e) => {
+        console.log(e);
+        console.log('champion!');
+        this.$store.dispatch('chat/fetchChatContacts')
+      });
   },
   beforeDestroy () {
     this.$store.unregisterModule('chat')
   },
   mounted () {
-    // this.$store.dispatch('chat/setChatSearchQuery', '')
+    this.$store.dispatch('chat/setChatSearchQuery', '')
   },
 }
 
