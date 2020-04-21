@@ -55,7 +55,7 @@ export default {
         .then(response => {
           let newThread = []
           newThread[response.data[0].thread_id] = response.data
-
+          console.log(response.data)
           commit('SEND_CHAT_MESSAGE',{payload: response.data, thread: newThread})
 
           if (payload.thread.doctor_id != null)
@@ -93,12 +93,6 @@ export default {
   // Get chat-contacts from server. Also change in store
   fetchChatContacts ({ getters, commit }) {
     return new Promise((resolve, reject) => {
-      // axios.get('/api/apps/chat/chat-contacts', {params: {q: ''}})
-      //   .then((response) => {
-      //     commit('UPDATE_CHAT_CONTACTS', response.data)
-      //     resolve(response)
-      //   })
-      //   .catch((error) => { reject(error) })
       axios.get('/api/chat/message')
         .then((response) => {
           commit('UPDATE_CHAT_CONTACTS', response.data)

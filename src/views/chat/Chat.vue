@@ -318,7 +318,7 @@ export default {
   },
   mounted () {
     // this.$store.dispatch('chat/setChatSearchQuery', '')
-  }
+  },
 }
 
 </script>
