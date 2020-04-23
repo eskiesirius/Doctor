@@ -82,6 +82,13 @@ export default [
         i18n: 'Chat'
       },
       {
+        url: '/appointment',
+        name: 'Appointment',
+        slug: 'appointment',
+        icon: 'CalendarIcon',
+        i18n: 'Appointment'
+      },
+      {
         url: '/settings',
         slug: 'settings',
         name: 'User Settings',

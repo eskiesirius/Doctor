@@ -171,8 +171,8 @@
                                                     <div
                                                         class="item-view-secondary-action-btn bg-primary p-3 flex flex-grow items-center justify-center text-white cursor-pointer"
                                                         @click="chatDoctor(item)">
-                                                        <feather-icon icon="MailIcon" svgClasses="h-4 w-4" />
-                                                        <span class="text-sm font-semibold ml-2" >ASK FOR CONSULATION</span>
+                                                        <feather-icon icon="CalendarIcon" svgClasses="h-4 w-4" />
+                                                        <span class="text-sm font-semibold ml-2" >SET APPOINTMENT</span>
                                                     </div>
                                                 </div>
                                             </template>
@@ -199,8 +199,8 @@
                                             <div
                                                 class="item-view-secondary-action-btn bg-primary p-3 rounded-lg flex flex-grow items-center justify-center text-white cursor-pointer"
                                                 @click="chatDoctor(item)">
-                                                <feather-icon icon="MailIcon" svgClasses="h-4 w-4" />
-                                                <span class="text-sm font-semibold ml-2">ASK FOR CONSULATION</span>
+                                                <feather-icon icon="CalendarIcon" svgClasses="h-4 w-4" />
+                                                <span class="text-sm font-semibold ml-2">SET APPOINTMENT</span>
                                             </div>
                                         </template>
                                     </item-list-view>
@@ -274,7 +274,7 @@ export default {
     AisRefinementList,
     AisSearchBox,
     AisSortBy,
-    AisStats
+    AisStats,
   },
   data () {
     return {
@@ -289,7 +289,7 @@ export default {
       currentItemView: 'item-grid-view',
       algoliaCategories: [
         'specialty',
-      ]
+      ],
     }
   },
   computed: {
@@ -332,9 +332,11 @@ export default {
       this.$store.dispatch('doctors_list/toggleItemInFavoriteList', item)
     },
     chatDoctor(item){
-        this.$router.push({name: 'chat', params: item})
+        // this.$router.push({name: 'chat', params: item})
+        // .catch(() => {})
+        this.$router.push({name: 'set-appointment-doctor', params: item})
         .catch(() => {})
-    }
+    },
   },
   created () {
     this.setSidebarWidth()
@@ -409,6 +411,5 @@ export default {
     }
   }
 }
-
 </style>
 

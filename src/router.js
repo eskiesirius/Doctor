@@ -96,6 +96,21 @@ const router = new Router({
           }
         },
         {
+          path: '/doctors/:uuid/appointment',
+          name: 'set-appointment-doctor',
+          component: () => import('./views/doctors-list/SetAppointment.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Doctors', url:'/doctors'},
+              { title: 'Set Appointment', active: true }
+            ],
+            parent: 'doctors',
+            pageTitle: 'Set Appointment',
+            rule: 'regular'
+          }
+        },
+        {
           path: '/doctors/favorite-list',
           name: 'doctors-favorite-list',
           component: () => import('./views/doctors-list/DoctorsFavoriteList.vue'),
@@ -120,6 +135,20 @@ const router = new Router({
             ],
             parent: 'chat',
             pageTitle: 'Chat',
+            rule: 'regular'
+          }
+        },
+        {
+          path: '/appointment',
+          name: 'appointment',
+          component: () => import('@/views/appointment/Appointment.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Appointment', active: true }
+            ],
+            parent: 'appointment',
+            pageTitle: 'Appointment',
             rule: 'regular'
           }
         },

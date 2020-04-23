@@ -321,8 +321,6 @@ export default {
 
     Echo.private('thread.' + this.$store.state.AppActiveUser.id)
       .listen('.App\\Events\\Thread\\ThreadWasCreated',(e) => {
-        console.log(e);
-        console.log('champion!');
         this.$store.dispatch('chat/fetchChatContacts')
       });
   },
