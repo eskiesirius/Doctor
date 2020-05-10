@@ -177,7 +177,6 @@ export default {
       title: '',
       startDate: '',
       endDate: '',
-      time_schedule_id: 0,
       labelLocal: 'none',
 
       langHe: he,
@@ -267,11 +266,10 @@ export default {
       this.startDate = e.startDate
       this.endDate = e.endDate
       this.labelLocal = e.label
-      this.time_schedule_id = e.time_schedule_id
       this.activePromptEditEvent = true
     },
     editEvent () {
-      const obj = { id: this.id, title: this.title, startDate: this.startDate, label: this.labelLocal, time_schedule_id: this.time_schedule_id }
+      const obj = { id: this.id, title: this.title, startDate: this.startDate, label: this.labelLocal }
       obj.classes = `event-${  this.labelColor(this.labelLocal)}`
       this.$store.dispatch('calendar/editEvent', obj)
     },

@@ -332,8 +332,6 @@ export default {
       this.$store.dispatch('doctors_list/toggleItemInFavoriteList', item)
     },
     chatDoctor(item){
-        // this.$router.push({name: 'chat', params: item})
-        // .catch(() => {})
         this.$router.push({name: 'set-appointment-doctor', params: item})
         .catch(() => {})
     },

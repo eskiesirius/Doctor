@@ -8,6 +8,7 @@
 ==========================================================================================*/
 
 import axios from '@/axios.js'
+import moment from 'moment'
 
 export default {
   addEvent ({ commit, rootState }, event) {
@@ -15,7 +16,6 @@ export default {
       'patient_id': rootState.AppActiveUser.role == 'patient' ? rootState.AppActiveUser.id : null,
       'doctor_id': rootState.AppActiveUser.role == 'doctor' ? rootState.AppActiveUser.id : null,
       'title': event.title,
-      'time_schedule_id': null,
       'appointment_date': event.startDate,
       'isWholeDay': true,
       'label': event.label,
@@ -46,7 +46,18 @@ export default {
       axios.get(`/api/doctors-list/${doctor.uuid}/appointment`)
         .then((response) => {
           console.log(response.data)
-          commit('SET_EVENTS', response.data)
+          commit('SET_BLOCKED_DATES', response.data)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
+  },
+  fetchAvailableTime ({ commit }, { date, doctor }) {
+    return new Promise((resolve, reject) => {
+      date = moment(date).format('MM/DD/YYYY')
+      axios.get(`/api/doctors-list/${doctor.uuid}/schedule`, { params: {date}} )
+        .then((response) => {
+          commit('SET_TIME', response.data)
           resolve(response)
         })
         .catch((error) => { reject(error) })
@@ -105,5 +116,27 @@ export default {
         })
         .catch((error) => { reject(error) })
     })
+  },
+  setAppointment({ commit, dispatch, rootState }, payload){
+    const data = {
+      'message'           : '',
+      'isAppointment'     : true,
+      'title'             : 'New Appointment',
+      'appointment_date'  : payload.appointment_date,
+      'doctor_id'         : payload.doctor_id,
+      'patient_id'        : rootState.AppActiveUser.id,
+      'isWholeDay'        : false,
+      'label'             : 'business'
+    }
+
+    return new Promise((resolve, reject) => {
+        axios.post('/api/appointment', data)
+        .then((response) => {
+          commit('ADD_EVENT', response.data)
+          resolve(response)
+        })
+        .catch((error) => { reject(error) })
+    })
   }
+
 }

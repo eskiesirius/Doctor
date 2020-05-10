@@ -13,5 +13,9 @@ export default {
   eventLabels: [],
 
   // Simple Calendar State
-  events: []
+  events: [],
+
+  availableTime: [],
+
+  blockedDates: []
 }

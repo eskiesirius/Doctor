@@ -27,7 +27,7 @@
                                 eventContentHeight="1.65rem"
                                 class="theme-default"
                                 disablePast
-                                showEventTimes
+                                @click-date="getAvailableTime"
                                 >
 
                                 <div slot="header" class="mb-4">
@@ -55,16 +55,20 @@
                                 </div>
                               </calendar-view>
                             </div>
-                            <vx-card class="mb-5">
+                            <vx-card class="mb-5" v-if="selectedDate">
                                 <div class="flex justify-between">
                                     <span class="font-semibold">Available Time</span>
-                                    <span class="font-medium text-primary">GG</span>
+                                    <span class="font-medium text-primary">{{format_selectedDate}}</span>
                                 </div>
-                                <div class="flex justify-between mb-2">
-                                    <vs-select v-model="time">
-                                      <!-- <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in cityOptions" class="w-full" /> -->
-                                      <vs-select-item value="1" text="test" class="w-full" />
+                                <div class="flex justify-between mb-2" v-if="availableTime.length">
+                                    <vs-select v-model="selectedTime">
+                                      <vs-select-item v-for="time in availableTime" :value="time" :text="time" class="w-full" />
                                     </vs-select>
+                                </div>
+                                <div class="flex justify-between mb-2" v-else>
+                                    <div class="flex justify-between">
+                                        <span class="font-semibold">NO AVAILABLE TIME</span>
+                                    </div>
                                 </div>
                             </vx-card>
                         </div>
@@ -110,7 +114,7 @@
                                 <span>$574.3</span>
                             </div>
 
-                            <vs-button class="w-full" @click="$refs.checkoutWizard.nextTab()">SET APPOINTMENT</vs-button>
+                            <vs-button class="w-full" @click="nextTab">NEXT</vs-button>
                         </vx-card>
                     </div>
                 </div>
@@ -209,6 +213,14 @@
                                 <span>Amount Payable</span>
                                 <span class="font-semibold">$699.30</span>
                             </div>
+                            <vs-divider />
+
+                            <div class="flex justify-between font-semibold mb-3">
+                                <span>Total</span>
+                                <span>$574.3</span>
+                            </div>
+
+                            <vs-button class="w-full" @click="setAppointment">SET APPOINTMENT</vs-button>
                         </vx-card>
                     </div>
                 </div>
@@ -222,7 +234,8 @@
 import { FormWizard, TabContent } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import { CalendarView } from 'vue-simple-calendar'
-import moduleCalendar from '@/store/appointment/moduleAppointment.js'
+import moduleAppointment from '@/store/appointment/moduleAppointment.js'
+import moment from 'moment'
 require('vue-simple-calendar/static/css/default.css')
 
 const ItemListView = () => import('./components/ItemListView.vue')
@@ -245,6 +258,7 @@ export default {
         { text: 'Home', value: 1 },
         { text: 'Office', value: 2 }
       ],
+      selectedTime: '',
 
       // TAB 3
       paymentMethod: 'debit-card',
@@ -264,12 +278,14 @@ export default {
           label: 'Year',
           val: 'year'
         }
-      ]
+      ],
+      doctor: null,
+      selectedDate: null,
     }
   },
   computed: {
     appointments () {
-      return this.$store.state.calendar.events
+      return this.$store.state.calendar.blockedDates
     },
     cartItems () {
         return this.$store.state.eCommerce.cartItems.slice().reverse()
@@ -279,11 +295,18 @@ export default {
     },
     windowWidth () {
       return this.$store.state.windowWidth
+    },
+    availableTime() {
+        return this.$store.getters['calendar/availableTime']
+    },
+    format_selectedDate () {
+        return moment(this.selectedDate).format('MMM DD, YYYY')
     }
   },
   created() {
-    this.$store.registerModule('calendar', moduleCalendar)
-    this.$store.dispatch('calendar/fetchBlockedDates',this.$route.params)
+    this.doctor = this.$route.params
+    this.$store.registerModule('calendar', moduleAppointment)
+    this.$store.dispatch('calendar/fetchBlockedDates',this.doctor)
   },
   beforeDestroy () {
     this.$store.unregisterModule('calendar')
@@ -312,25 +335,16 @@ export default {
     updateMonth (val) {
       this.showDate = this.$refs.calendar.getIncrementedPeriod(val)
     },
+    getAvailableTime(e) {
+        this.selectedDate = e
+        this.selectedTime = ''
+        this.$store.dispatch('calendar/fetchAvailableTime', {date:this.selectedDate, doctor: this.doctor})
+    },
+    nextTab() {
+      if (this.selectedTime == '')
+        return
 
-    // TAB 2
-    submitNewAddressForm () {
-      return new Promise(() => {
-        this.$validator.validateAll('add-new-address').then(result => {
-          if (result) {
-            // if form have no errors
-            this.$refs.checkoutWizard.nextTab()
-          } else {
-            this.$vs.notify({
-              title: 'Error',
-              text: 'Please enter valid details',
-              color: 'warning',
-              iconPack: 'feather',
-              icon: 'icon-alert-circle'
-            })
-          }
-        })
-      })
+      this.$refs.checkoutWizard.nextTab();
     },
 
     // TAB 3
@@ -357,6 +371,15 @@ export default {
           }
         })
       })
+    },
+    setAppointment() {
+      const appointment_date = moment(this.selectedDate.toString().replace('00:00:00',this.selectedTime)).format('YYYY-MM-DD HH:mm:ss')
+      const payload = {
+        appointment_date,
+        doctor_id: this.doctor.id
+      }
+      console.log(appointment_date);
+      this.$store.dispatch('calendar/setAppointment',payload)
     }
   },
   components: {

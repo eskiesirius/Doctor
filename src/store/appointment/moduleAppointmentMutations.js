@@ -15,12 +15,18 @@ export default {
   SET_EVENTS (state, events) {
     state.events = events
   },
+  SET_BLOCKED_DATES (state, dates) {
+    state.blockedDates = dates
+  },
   SET_LABELS (state, labels) {
     state.eventLabels = labels
   },
   UPDATE_EVENT (state, event) {
     const eventIndex = state.events.findIndex((e) => e.id === event.id)
     Object.assign(state.events[eventIndex], event)
+  },
+  SET_TIME (state, time) {
+    state.availableTime = time
   },
   REMOVE_EVENT (state, eventId) {
     const eventIndex = state.events.findIndex((e) => e.id === eventId)
