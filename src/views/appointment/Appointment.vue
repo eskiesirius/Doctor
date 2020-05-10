@@ -61,6 +61,12 @@
         </div>
       </calendar-view>
     </div>
+    <vs-popup v-if="activeUserInfo.role == 'patient'" classContent="popup-example" title="Show Appointment" :active.sync="showAppointment">
+        {{title}}
+        <br />
+        <br />
+        <vs-button @click="chat" color="primary" type="filled">Contact this doctor</vs-button>
+    </vs-popup>
   </div>
 </template>
 
@@ -83,22 +89,16 @@ export default {
   data () {
     return {
       showDate: new Date(),
-      disabledFrom: false,
       id: 0,
       title: '',
-      startDate: '',
       appointmentDate: '',
-      endDate: '',
-      labelLocal: 'none',
+      showAppointment: false,
+      user: [],
 
       langHe: he,
       langEn: en,
 
-      url: '',
       calendarView: 'month',
-
-      activePromptAddEvent: false,
-      activePromptEditEvent: false,
 
       calendarViewTypes: [
         {
@@ -120,6 +120,9 @@ export default {
     simpleCalendarEvents () {
       return this.$store.state.calendar.events
     },
+    activeUserInfo () {
+      return this.$store.state.AppActiveUser
+    },
     windowWidth () {
       return this.$store.state.windowWidth
     }
@@ -130,19 +133,19 @@ export default {
     },
     openAppointment (event) {
       const e = this.$store.getters['calendar/getEvent'](event.id)
-      this.title = e.title
+      this.user = e.doctor;
+      const appointmentDate = moment(e.appointmentDate)
+      
+      this.title = e.title + ' ' + appointmentDate.format('MMM DD, YYYY')
       this.appointmentDate = e.appointmentDate
 
-      const appointmentDate = moment(this.appointmentDate)
-      
-      const title = this.title + ' ' + appointmentDate.format('MMM DD, YYYY')
-
-      this.$vs.dialog({
-        color:this.colorAlert,
-        title: 'Show Appointment',
-        text: title
-        })
+      this.showAppointment = true
     },
+    chat() {
+        this.showAppointment = false
+        this.$router.push({name: 'chat', params: this.user})
+        .catch(() => {})
+    }
   },
   created () {
     this.$store.registerModule('calendar', moduleCalendar)
