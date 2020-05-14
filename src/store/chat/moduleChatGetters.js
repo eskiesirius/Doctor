@@ -18,7 +18,6 @@ export default {
     const chatContacts = state.chatContacts.filter((contact) => contact.user.name.toLowerCase().includes(state.chatSearchQuery.toLowerCase()))
 
     chatContacts.sort((x, y) => {
-      console.log(getters.chatLastMessaged(x.uuid))
       const timeX = getters.chatLastMessaged(x.uuid).time
       const timeY = getters.chatLastMessaged(y.uuid).time
       return new Date(timeY) - new Date(timeX)
@@ -37,17 +36,17 @@ export default {
   chatUser: (state, getters, rootState) => id => state.chatContacts.find((contact) => contact.user.uuid === id),
 
   chatLastMessaged: (state, getters) => id => {
-    if (getters.chatDataOfUser(id)) return getters.chatDataOfUser(id).msg.slice(-1)[0]
+    if (getters.chatDataOfUser(id)) return getters.chatDataOfUser(id).slice(-1)[0]
     else return false
   },
-  chatUnseenMessages: (state, getters) => id => {
+  chatUnseenMessages: (state, getters,rootState) => id => {
     let unseenMsg = 0
-    // const chatData = getters.chatDataOfUser(id)
-    // if (chatData) {
-    //   chatData.msg.map((msg) => {
-    //     if (!msg.isSeen && !msg.isSent) unseenMsg++
-    //   })
-    // }
+    const chatData = getters.chatDataOfUser(id)
+    if (chatData) {
+      chatData.map((msg) => {
+        if (!msg.isSeen && !msg.isSent && rootState.AppActiveUser.id != msg.user_id) unseenMsg++
+      })
+    }
     return unseenMsg
   }
 }

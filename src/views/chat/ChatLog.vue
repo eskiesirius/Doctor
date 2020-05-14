@@ -33,9 +33,6 @@
                   subtitle-color="warning"
                   :subtitle="changeDateFormatFull(chat.appointment_date)">
                   <p class="mb-3">Hi! I would like to set an appointment with you doc.</p>
-                  <div class="flex justify-between flex-wrap">
-                    <vs-button class="mt-4 mr-2 shadow-lg" type="gradient" color="#7367F0" gradient-color-secondary="#CE9FFC">Pay to Finalize Appointment</vs-button>
-                  </div>
                 </vx-card>
                 </template>
                 <template v-else>

@@ -35,11 +35,9 @@ export default {
 
       // If there's already chat. Push msg to existing chat
       state.chats[Object.keys(state.chats).find(key => Number(key) === Number(data.thread_id))].push(data)
-      console.log('old')
     } else {
       // Create New chat and add msg
       state.chats = thread
-      console.log('new')
     }
   },
   UPDATE_CONTACTS (state, contacts) {
@@ -48,14 +46,14 @@ export default {
   UPDATE_CHAT_CONTACTS (state, chatContacts) {
     state.chatContacts = chatContacts
   },
-  UPDATE_CHATS (state, chats) {
+  UPDATE_CHATS (state, {chats, thread_id}) {
     state.chats = chats
   },
   SET_CHAT_SEARCH_QUERY (state, query) {
     state.chatSearchQuery = query
   },
   MARK_SEEN_ALL_MESSAGES (state, payload) {
-    payload.chatData.msg.forEach((msg) => {
+    payload.chatData.forEach((msg) => {
       msg.isSeen = true
     })
   },

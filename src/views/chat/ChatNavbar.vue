@@ -8,7 +8,6 @@
             </div>
             <h6>{{ userDetails.name }}</h6>
             <vs-spacer></vs-spacer>
-            <vs-button color="success" @click="setAppointment">Set Appointment</vs-button>
         </vs-navbar>
     </div>
 </template>
@@ -52,9 +51,6 @@ export default {
     getUserStatus (isActiveUser) {
       return isActiveUser ? this.$store.state.AppActiveUser.status : this.userDetails.status
     },
-    setAppointment() {
-      this.$emit('clicked')
-    }
   }
 }
 
