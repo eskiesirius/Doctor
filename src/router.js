@@ -68,6 +68,62 @@ const router = new Router({
         // My Routes
         // =============================================================================
         {
+          path: '/appointment/reserve',
+          name: 'appointment-reserve',
+          component: () => import('@/views/appointment/Appointment.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Appointment', active: true }
+            ],
+            pageTitle: 'Appointment List',
+            rule: 'regular',
+            status: 'reserved'
+          }
+        },
+        {
+          path: '/appointment/pending',
+          name: 'appointment-pending',
+          component: () => import('@/views/appointment/Appointment.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Appointment', active: true }
+            ],
+            pageTitle: 'Appointment List',
+            rule: 'regular',
+            status: 'pending'
+          }
+        },
+        {
+          path: '/appointment/book',
+          name: 'appointment-book',
+          component: () => import('@/views/appointment/Appointment.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Appointment', active: true }
+            ],
+            pageTitle: 'Appointment List',
+            rule: 'regular',
+            status: 'booked'
+          }
+        },
+        {
+          path: '/appointment/cancel',
+          name: 'appointment-cancel',
+          component: () => import('@/views/appointment/Appointment.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Appointment', active: true }
+            ],
+            pageTitle: 'Appointment List',
+            rule: 'regular',
+            status: 'cancelled'
+          }
+        },
+        {
           path: '/doctors',
           name: 'doctors',
           component: () => import('@/views/doctors-list/DoctorsList.vue'),
@@ -139,23 +195,9 @@ const router = new Router({
           }
         },
         {
-          path: '/appointment',
-          name: 'appointment',
-          component: () => import('@/views/appointment/Appointment.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'Appointment', active: true }
-            ],
-            parent: 'appointment',
-            pageTitle: 'Appointment',
-            rule: 'regular'
-          }
-        },
-        {
           path: '/settings',
           name: 'settings',
-          component: () => import('@/views/pages/user-settings/UserSettings.vue'),
+          component: () => import('@/views/user-settings/UserSettings.vue'),
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },

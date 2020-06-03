@@ -1,163 +1,307 @@
 <template>
-  <div id="simple-calendar-app">
-    <div class="vx-card no-scroll-content">
-      <calendar-view
-        ref="calendar"
-        :displayPeriodUom="calendarView"
-        :show-date="showDate"
-        :events="simpleCalendarEvents"
-        :eventTop="windowWidth <= 400 ? '2rem' : '3rem'"
-        eventBorderHeight="0px"
-        eventContentHeight="1.65rem"
-        class="theme-default"
-        @click-event="openAppointment"
-        >
+    <div id="data-list-list-view" class="data-list-container">
+        <vs-table ref="table" multiple v-model="selected" pagination :max-items="itemsPerPage" search :data="appointments">
 
-        <div slot="header" class="mb-4">
+            <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
-          <div class="vx-row no-gutter">
+                <div class="flex flex-wrap-reverse items-center data-list-btn-container">
 
-            <!-- Current Month -->
-            <div class="vx-col sm:w-1/3 w-full sm:my-0 my-3 flex sm:justify-end justify-center order-last">
-              <div class="flex items-center">
-                <feather-icon
-                  :icon="$vs.rtl ? 'ChevronRightIcon' : 'ChevronLeftIcon'"
-                  @click="updateMonth(-1)"
-                  svgClasses="w-5 h-5 m-1"
-                  class="cursor-pointer bg-primary text-white rounded-full" />
+                    <!-- ACTION - DROPDOWN -->
+                    <vs-dropdown vs-trigger-click class="dd-actions cursor-pointer mr-4 mb-4">
 
-                <span class="mx-3 text-xl font-medium whitespace-no-wrap">{{ showDate | month }}</span>
+                        <div class="p-4 shadow-drop rounded-lg d-theme-dark-bg cursor-pointer flex items-center justify-center text-lg font-medium w-32 w-full">
+                            <span class="mr-2">Actions</span>
+                            <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+                        </div>
 
-                <feather-icon
-                  :icon="$vs.rtl ? 'ChevronLeftIcon' : 'ChevronRightIcon'"
-                  @click="updateMonth(1)"
-                  svgClasses="w-5 h-5 m-1"
-                  class="cursor-pointer bg-primary text-white rounded-full" />
-              </div>
+                        <vs-dropdown-menu>
+
+                            <vs-dropdown-item @click="approveMark">
+                                <span class="flex items-center">
+                                    <feather-icon icon="ThumbsUpIcon" svgClasses="h-4 w-4" class="mr-2" />
+                                    <span>Approve</span>
+                                </span>
+                            </vs-dropdown-item>
+
+                            <vs-dropdown-item @click="cancelMark">
+                                <span class="flex items-center">
+                                    <feather-icon icon="XCircleIcon" svgClasses="h-4 w-4" class="mr-2" />
+                                    <span>Cancel</span>
+                                </span>
+                            </vs-dropdown-item>
+                        </vs-dropdown-menu>
+                    </vs-dropdown>
+                </div>
+
+                <!-- ITEMS PER PAGE -->
+                <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 mr-4 items-per-page-handler">
+                    <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
+                        <span class="mr-2">{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ appointments.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : appointments.length }} of {{ queriedItems }}</span>
+                        <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+                    </div>
+                    <vs-dropdown-menu>
+
+                        <vs-dropdown-item @click="itemsPerPage=4">
+                            <span>4</span>
+                        </vs-dropdown-item>
+                        <vs-dropdown-item @click="itemsPerPage=10">
+                            <span>10</span>
+                        </vs-dropdown-item>
+                        <vs-dropdown-item @click="itemsPerPage=15">
+                            <span>15</span>
+                        </vs-dropdown-item>
+                        <vs-dropdown-item @click="itemsPerPage=20">
+                            <span>20</span>
+                        </vs-dropdown-item>
+                    </vs-dropdown-menu>
+                </vs-dropdown>
             </div>
 
-            <div class="vx-col sm:w-1/3 w-full flex justify-center">
-              <template v-for="(view, index) in calendarViewTypes">
-                <vs-button
-                  v-if="calendarView === view.val"
-                  :key="String(view.val) + 'filled'"
-                  type="filled"
-                  class="p-3 md:px-8 md:py-3"
-                  :class="{'border-l-0 rounded-l-none': index, 'rounded-r-none': calendarViewTypes.length !== index+1}"
-                  @click="calendarView = view.val"
-                  >{{ view.label }}</vs-button>
-                <vs-button
-                  v-else
-                  :key="String(view.val) + 'border'"
-                  type="border"
-                  class="p-3 md:px-8 md:py-3"
-                  :class="{'border-l-0 rounded-l-none': index, 'rounded-r-none': calendarViewTypes.length !== index+1}"
-                  @click="calendarView = view.val"
-                  >{{ view.label }}</vs-button>
-              </template>
+            <template slot="thead">
+                <vs-th sort-key="patient_name">Patient Name</vs-th>
+                <vs-th sort-key="appointment_date">Appointment Date</vs-th>
+                <vs-th sort-key="status">Status</vs-th>
+                <vs-th>Action</vs-th>
+            </template>
 
-            </div>
-          </div>
-        </div>
-      </calendar-view>
+            <template slot-scope="{data}">
+                <tbody>
+                    <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+
+                        <vs-td>
+                            <p class="product-name font-medium truncate">{{ tr.patient_name }}</p>
+                        </vs-td>
+
+                        <vs-td>
+                            <p class="product-appointment_date">{{ tr.appointment_date | title }}</p>
+                        </vs-td>
+
+                        <vs-td>
+                            <vs-chip :color="getStatusColor(tr.status)" class="product-order-status">{{ tr.status | title }}</vs-chip>
+                        </vs-td>
+
+                        <vs-td class="whitespace-no-wrap">
+                            <vs-button style="margin-right:1em" color="success" type="gradient" @click="approve(tr)">Approve</vs-button>
+                            <vs-button color="danger" type="gradient" @click="cancel(tr)">Cancel</vs-button>
+                        </vs-td>
+                    </vs-tr>
+                </tbody>
+            </template>
+        </vs-table>
     </div>
-    <vs-popup v-if="activeUserInfo.role == 'patient'" classContent="popup-example" title="Show Appointment" :active.sync="showAppointment">
-        {{title}}
-        <br />
-        <br />
-        <vs-button @click="chat" color="primary" type="filled">Contact this doctor</vs-button>
-    </vs-popup>
-  </div>
 </template>
 
 <script>
-import { CalendarView, CalendarViewHeader } from 'vue-simple-calendar'
-import moduleCalendar from '@/store/appointment/moduleAppointment.js'
-require('vue-simple-calendar/static/css/default.css')
-
-import Datepicker from 'vuejs-datepicker'
-import { en, he } from 'vuejs-datepicker/src/locale'
-
-import moment from 'moment'
+import moduleAppointment from '@/store/appointment/moduleAppointment.js'
 
 export default {
-  components: {
-    CalendarView,
-    CalendarViewHeader,
-    Datepicker
-  },
-  data () {
-    return {
-      showDate: new Date(),
-      id: 0,
-      title: '',
-      appointmentDate: '',
-      showAppointment: false,
-      user: [],
-
-      langHe: he,
-      langEn: en,
-
-      calendarView: 'month',
-
-      calendarViewTypes: [
-        {
-          label: 'Month',
-          val: 'month'
-        },
-        {
-          label: 'Week',
-          val: 'week'
-        },
-        {
-          label: 'Year',
-          val: 'year'
+    data () {
+        return {
+            selected: [],
+            itemsPerPage: 4,
+            isMounted: false,
         }
-      ]
-    }
-  },
-  computed: {
-    simpleCalendarEvents () {
-      return this.$store.state.calendar.events
     },
-    activeUserInfo () {
-      return this.$store.state.AppActiveUser
+    computed: {
+        currentPage () {
+            if (this.isMounted) {
+                return this.$refs.table.currentx
+            }
+            return 0
+        },
+        appointments () {
+            return this.$store.state.appointment.appointments
+        },
+        queriedItems () {
+            return this.$refs.table ? this.$refs.table.queriedResults.length : this.appointments.length
+        }
     },
-    windowWidth () {
-      return this.$store.state.windowWidth
-    }
-  },
-  methods: {
-    updateMonth (val) {
-      this.showDate = this.$refs.calendar.getIncrementedPeriod(val)
-    },
-    openAppointment (event) {
-      const e = this.$store.getters['calendar/getEvent'](event.id)
-      this.user = e.doctor;
-      const appointmentDate = moment(e.appointmentDate)
-      
-      this.title = e.title + ' ' + appointmentDate.format('MMM DD, YYYY')
-      this.appointmentDate = e.appointmentDate
+    methods: {
+        async approve(appointment) {
+            await this.$store.dispatch('appointment/approveAppointment',appointment)
 
-      this.showAppointment = true
+            this.$vs.notify({
+                color: 'success',
+                title: 'Approved Appointment',
+                text: 'Appointment was successfully approved'
+            })
+        },
+        cancel(appointment) {
+            console.log(appointment)
+        },
+        approveMark() {
+            if (this.selected.length == 0)
+                return
+
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'success',
+                title: `Approve Appointments`,
+                text: 'Are you sure you want to approve the selected appoitments?',
+                accept: this.approveAccept
+            })
+        },
+        approveAccept(){
+            this.$vs.notify({
+                color: 'success',
+                title: 'Approved Appointments',
+                text: 'The selected appointment was successfully approved'
+            })
+        },
+        cancelMark() {
+            if (this.selected.length == 0)
+                return
+
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `Cancel Appointments`,
+                text: 'Are you sure you want to cancel the selected appoitments?',
+                accept: this.cancelAccept
+            })
+        },
+        cancelAccept(){
+            this.$vs.notify({
+                color: 'success',
+                title: 'Cancelled Appointments',
+                text: 'The selected appointment was successfully cancelled'
+            })
+        },
+        deleteData (id) {
+            this.$store.dispatch('appointment/removeItem', id).catch(err => { console.error(err) })
+        },
+        getStatusColor (status) {
+            if (status === 'reserved') return 'success'
+            if (status === 'pending')   return 'warning'
+            if (status === 'cancelled')  return 'danger'
+            return 'primary'
+        }
     },
-    chat() {
-        this.showAppointment = false
-        this.$router.push({name: 'chat', params: this.user})
-        .catch(() => {})
+    created () {
+        if (!moduleAppointment.isRegistered) {
+            this.$store.registerModule('appointment', moduleAppointment)
+            moduleAppointment.isRegistered = true
+        }
+        
+    },
+    mounted () {
+        this.isMounted = true
+        this.$store.dispatch('appointment/fetchAppointments',this.$route.meta.status)
     }
-  },
-  created () {
-    this.$store.registerModule('calendar', moduleCalendar)
-    this.$store.dispatch('calendar/fetchEvents')
-    this.$store.dispatch('calendar/fetchEventLabels')
-  },
-  beforeDestroy () {
-    this.$store.unregisterModule('calendar')
-  }
 }
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/vuexy/apps/simple-calendar.scss";
+#data-list-list-view {
+    .vs-con-table {
+        @media (max-width: 689px) {
+            .vs-table--search {
+                margin-left: 0;
+                max-width: unset;
+                width: 100%;
+
+                .vs-table--search-input {
+                    width: 100%;
+                }
+            }
+        }
+
+        @media (max-width: 461px) {
+            .items-per-page-handler {
+                display: none;
+            }
+        }
+
+        @media (max-width: 341px) {
+            .data-list-btn-container {
+                width: 100%;
+
+                .dd-actions,
+                .btn-add-new {
+                    width: 100%;
+                    margin-right: 0 !important;
+                }
+            }
+        }
+
+        .product-name {
+            max-width: 23rem;
+        }
+
+        .vs-table--header {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
+            > span {
+                display: flex;
+                flex-grow: 1;
+            }
+
+            .vs-table--search{
+                padding-top: 0;
+
+                .vs-table--search-input {
+                    padding: 0.9rem 2.5rem;
+                    font-size: 1rem;
+
+                    &+i {
+                        left: 1rem;
+                    }
+
+                    &:focus+i {
+                        left: 1rem;
+                    }
+                }
+            }
+        }
+
+        .vs-table {
+            border-collapse: separate;
+            border-spacing: 0 1.3rem;
+            padding: 0 1rem;
+
+            tr{
+                box-shadow: 0 4px 20px 0 rgba(0,0,0,.05);
+                td{
+                    padding: 20px;
+                    &:first-child{
+                        border-top-left-radius: .5rem;
+                        border-bottom-left-radius: .5rem;
+                    }
+                    &:last-child{
+                        border-top-right-radius: .5rem;
+                        border-bottom-right-radius: .5rem;
+                    }
+                }
+                td.td-check{
+                    padding: 20px !important;
+                }
+            }
+        }
+
+        .vs-table--thead{
+            th {
+                padding-top: 0;
+                padding-bottom: 0;
+
+                .vs-table-text{
+                    text-transform: uppercase;
+                    font-weight: 600;
+                }
+            }
+            th.td-check{
+                padding: 0 15px !important;
+            }
+            tr{
+                background: none;
+                box-shadow: none;
+            }
+        }
+
+        .vs-table--pagination {
+            justify-content: center;
+        }
+    }
+}
 </style>

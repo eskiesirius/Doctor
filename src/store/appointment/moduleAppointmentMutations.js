@@ -9,27 +9,11 @@
 
 
 export default {
-  ADD_EVENT (state, event) {
-    state.events.push(event)
+  SET_APPOINTMENT (state,appointments) {
+    state.appointments = appointments
   },
-  SET_EVENTS (state, events) {
-    state.events = events
-  },
-  SET_BLOCKED_DATES (state, dates) {
-    state.blockedDates = dates
-  },
-  SET_LABELS (state, labels) {
-    state.eventLabels = labels
-  },
-  UPDATE_EVENT (state, event) {
-    const eventIndex = state.events.findIndex((e) => e.id === event.id)
-    Object.assign(state.events[eventIndex], event)
-  },
-  SET_TIME (state, time) {
-    state.availableTime = time
-  },
-  REMOVE_EVENT (state, eventId) {
-    const eventIndex = state.events.findIndex((e) => e.id === eventId)
-    state.events.splice(eventIndex, 1)
+  REMOVE_APPOINTMENT (state, appointment_id) {
+    const appointmentIndex = state.appointments.findIndex((e) => e.id === appointment_id)
+    state.appointments.splice(appointmentIndex, 1)
   }
 }

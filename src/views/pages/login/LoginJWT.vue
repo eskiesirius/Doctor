@@ -36,8 +36,8 @@
 export default {
   data () {
     return {
-      email: 'a@a.com',
-      password: '123123123',
+      email: 'gg@gg.com',
+      password: '123123',
       checkbox_remember_me: false,
       emailErrorMessage: '',
       passwordErrorMessage: '',

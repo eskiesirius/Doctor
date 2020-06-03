@@ -56,6 +56,38 @@ export default [
     items: [
       {
         url: null,
+        name: 'Appointment',
+        icon: 'CalendarIcon',
+        i18n: 'Appointment',
+        submenu: [
+          {
+            url: '/appointment/reserve',
+            slug: 'appointment-reserve',
+            name: 'Reserved',
+            i18n: 'Reserved',
+          },
+          {
+            url: '/appointment/pending',
+            slug: 'appointment-pending',
+            name: 'Pending',
+            i18n: 'Pending',
+          },
+          {
+            url: '/appointment/book',
+            slug: 'appointment-book',
+            name: 'Booked',
+            i18n: 'Booked',
+          },
+          {
+            url: '/appointment/cancel',
+            slug: 'appointment-cancel',
+            name: 'Cancelled',
+            i18n: 'Cancelled',
+          }
+        ]
+      },
+      {
+        url: null,
         name: 'Doctors',
         icon: 'UsersIcon',
         i18n: 'Doctors',
