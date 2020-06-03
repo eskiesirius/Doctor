@@ -7,15 +7,14 @@
                 <div class="flex flex-wrap-reverse items-center data-list-btn-container">
 
                     <!-- ACTION - DROPDOWN -->
-                    <vs-dropdown vs-trigger-click class="dd-actions cursor-pointer mr-4 mb-4">
+                    <vs-dropdown vs-trigger-click class="dd-actions cursor-pointer mr-4 mb-4" v-if="status != 'cancelled'">
 
                         <div class="p-4 shadow-drop rounded-lg d-theme-dark-bg cursor-pointer flex items-center justify-center text-lg font-medium w-32 w-full">
                             <span class="mr-2">Actions</span>
                             <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
                         </div>
 
-                        <vs-dropdown-menu>
-
+                        <vs-dropdown-menu v-if="status == 'reserved'">
                             <vs-dropdown-item @click="approveMark">
                                 <span class="flex items-center">
                                     <feather-icon icon="ThumbsUpIcon" svgClasses="h-4 w-4" class="mr-2" />
@@ -23,6 +22,15 @@
                                 </span>
                             </vs-dropdown-item>
 
+                            <vs-dropdown-item @click="cancelMark">
+                                <span class="flex items-center">
+                                    <feather-icon icon="XCircleIcon" svgClasses="h-4 w-4" class="mr-2" />
+                                    <span>Cancel</span>
+                                </span>
+                            </vs-dropdown-item>
+                        </vs-dropdown-menu>
+
+                        <vs-dropdown-menu v-else>
                             <vs-dropdown-item @click="cancelMark">
                                 <span class="flex items-center">
                                     <feather-icon icon="XCircleIcon" svgClasses="h-4 w-4" class="mr-2" />
