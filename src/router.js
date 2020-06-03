@@ -68,6 +68,20 @@ const router = new Router({
         // My Routes
         // =============================================================================
         {
+          path: '/tenant',
+          name: 'tenant',
+          component: () => import('@/views/tenant/Tenant.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Tenant', active: true }
+            ],
+            parent: 'tenant',
+            pageTitle: 'Tenant',
+            rule: 'superAdmin'
+          }
+        },
+        {
           path: '/appointment/reserve',
           name: 'appointment-reserve',
           component: () => import('@/views/appointment/Appointment.vue'),

@@ -55,6 +55,13 @@ export default [
     i18n: 'Menu',
     items: [
       {
+        url: '/tenant',
+        name: 'Tenant',
+        slug: 'tenant',
+        icon: 'HomeIcon',
+        i18n: 'Tenant'
+      },
+      {
         url: null,
         name: 'Appointment',
         icon: 'CalendarIcon',
