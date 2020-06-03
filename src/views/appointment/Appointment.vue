@@ -88,16 +88,24 @@
                         </vs-td>
 
                         <vs-td>
-                            <p class="product-appointment_date">{{ tr.appointment_date | title }}</p>
+                            <p class="product-appointment_date">{{ tr.appointment_date }}</p>
                         </vs-td>
 
                         <vs-td>
                             <vs-chip :color="getStatusColor(tr.status)" class="product-order-status">{{ tr.status | title }}</vs-chip>
                         </vs-td>
 
-                        <vs-td class="whitespace-no-wrap" v-if="status != 'cancelled'">
-                            <vs-button style="margin-right:1em" color="success" type="gradient" @click="approve(tr)" v-if="status == 'reserved'">Approve</vs-button>
+                        <vs-td class="whitespace-no-wrap" v-if="status == 'reserved'">
+                            <vs-button style="margin-right:1em" color="success" type="gradient" @click="approve(tr)">Approve</vs-button>
                             <vs-button color="danger" type="gradient" @click="cancel(tr)">Cancel</vs-button>
+                        </vs-td>
+
+                        <vs-td class="whitespace-no-wrap" v-else-if="status == 'pending'">
+                            <vs-button color="danger" type="gradient" @click="cancel(tr)">Cancel</vs-button>
+                        </vs-td>
+
+                        <vs-td class="whitespace-no-wrap" v-else-if="status == 'booked'">
+                            <vs-button color="danger" type="gradient" @click="cancel(tr)" v-if="isPastBooking(tr.appointment_date)">Cancel</vs-button>
                         </vs-td>
                     </vs-tr>
                 </tbody>
@@ -108,6 +116,7 @@
 
 <script>
 import moduleAppointment from '@/store/appointment/moduleAppointment.js'
+import moment from 'moment'
 
 export default {
     data () {
@@ -201,6 +210,9 @@ export default {
             if (status === 'pending')   return 'warning'
             if (status === 'cancelled')  return 'danger'
             return 'primary'
+        },
+        isPastBooking(appointment_date){
+            return moment(appointment_date).isBefore(moment())
         }
     },
     created () {
