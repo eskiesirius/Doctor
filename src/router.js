@@ -52,7 +52,7 @@ const router = new Router({
           name: 'dashboard-analytics',
           component: () => import('./views/DashboardAnalytics.vue'),
           meta: {
-            rule: 'regular',
+            rule: 'doctor',
           }
         },
         {
@@ -60,7 +60,7 @@ const router = new Router({
           name: 'dashboard-ecommerce',
           component: () => import('./views/DashboardECommerce.vue'),
           meta: {
-            rule: 'admin',
+            rule: 'superAdmin',
           }
         },
 
@@ -77,7 +77,7 @@ const router = new Router({
               { title: 'Appointment', active: true }
             ],
             pageTitle: 'Appointment List',
-            rule: 'regular',
+            rule: 'doctor',
             status: 'reserved'
           }
         },
@@ -91,7 +91,7 @@ const router = new Router({
               { title: 'Appointment', active: true }
             ],
             pageTitle: 'Appointment List',
-            rule: 'regular',
+            rule: 'doctor',
             status: 'pending'
           }
         },
@@ -105,7 +105,7 @@ const router = new Router({
               { title: 'Appointment', active: true }
             ],
             pageTitle: 'Appointment List',
-            rule: 'regular',
+            rule: 'doctor',
             status: 'booked'
           }
         },
@@ -119,7 +119,7 @@ const router = new Router({
               { title: 'Appointment', active: true }
             ],
             pageTitle: 'Appointment List',
-            rule: 'regular',
+            rule: 'doctor',
             status: 'cancelled'
           }
         },
@@ -133,7 +133,7 @@ const router = new Router({
               { title: 'Doctors', active: true }
             ],
             pageTitle: 'Doctors List',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -148,7 +148,7 @@ const router = new Router({
             ],
             parent: 'doctors',
             pageTitle: 'Doctor Details',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -163,7 +163,7 @@ const router = new Router({
             ],
             parent: 'doctors',
             pageTitle: 'Set Appointment',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -177,7 +177,7 @@ const router = new Router({
               { title: 'Favorite List', active: true }
             ],
             pageTitle: 'Favorite List',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -191,7 +191,7 @@ const router = new Router({
             ],
             parent: 'chat',
             pageTitle: 'Chat',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -204,7 +204,7 @@ const router = new Router({
               { title: 'User Settings', active: true }
             ],
             pageTitle: 'Settings',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
 
@@ -220,7 +220,7 @@ const router = new Router({
           path: '/apps/todo/:filter',
           component: () => import('./views/apps/todo/Todo.vue'),
           meta: {
-            rule: 'regular',
+            rule: 'doctor',
             parent: 'todo',
             no_scroll: true
           }
@@ -230,7 +230,7 @@ const router = new Router({
           name: 'test-chat',
           component: () => import('./views/apps/chat/Chat.vue'),
           meta: {
-            rule: 'regular',
+            rule: 'doctor',
             no_scroll: true
           }
         },
@@ -243,7 +243,7 @@ const router = new Router({
           path: '/apps/email/:filter',
           component: () => import('./views/apps/email/Email.vue'),
           meta: {
-            rule: 'regular',
+            rule: 'doctor',
             parent: 'email',
             no_scroll: true
           }
@@ -253,7 +253,7 @@ const router = new Router({
           name: 'calendar-simple-calendar',
           component: () => import('./views/apps/calendar/SimpleCalendar.vue'),
           meta: {
-            rule: 'regular',
+            rule: 'doctor',
             no_scroll: true
           }
         },
@@ -268,7 +268,7 @@ const router = new Router({
               { title: 'Shop', active: true }
             ],
             pageTitle: 'Shop',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -282,7 +282,7 @@ const router = new Router({
               { title: 'Wish List', active: true }
             ],
             pageTitle: 'Wish List',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -296,7 +296,7 @@ const router = new Router({
               { title: 'Checkout', active: true }
             ],
             pageTitle: 'Checkout',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         /*
@@ -325,7 +325,7 @@ const router = new Router({
             ],
             parent: 'ecommerce-item-detail-view',
             pageTitle: 'Item Details',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -339,7 +339,7 @@ const router = new Router({
               { title: 'List', active: true }
             ],
             pageTitle: 'User List',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -353,7 +353,7 @@ const router = new Router({
               { title: 'View', active: true }
             ],
             pageTitle: 'User View',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -367,7 +367,7 @@ const router = new Router({
               { title: 'Edit', active: true }
             ],
             pageTitle: 'User Edit',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         // =============================================================================
@@ -384,7 +384,7 @@ const router = new Router({
               { title: 'List View', active: true }
             ],
             pageTitle: 'List View',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -398,7 +398,7 @@ const router = new Router({
               { title: 'Thumb View', active: true }
             ],
             pageTitle: 'Thumb View',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -412,7 +412,7 @@ const router = new Router({
               { title: 'Vuesax', active: true }
             ],
             pageTitle: 'Grid',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -426,7 +426,7 @@ const router = new Router({
               { title: 'Tailwind', active: true }
             ],
             pageTitle: 'Tailwind Grid',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -439,7 +439,7 @@ const router = new Router({
               { title: 'Colors', active: true }
             ],
             pageTitle: 'Colors',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -453,7 +453,7 @@ const router = new Router({
               { title: 'Basic Cards', active: true }
             ],
             pageTitle: 'Basic Cards',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -467,7 +467,7 @@ const router = new Router({
               { title: 'Statistics Cards', active: true }
             ],
             pageTitle: 'Statistics Card',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -481,7 +481,7 @@ const router = new Router({
               { title: 'Analytics Card', active: true }
             ],
             pageTitle: 'Analytics Card',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -495,7 +495,7 @@ const router = new Router({
               { title: 'Card Actions', active: true }
             ],
             pageTitle: 'Card Actions',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -509,7 +509,7 @@ const router = new Router({
               { title: 'Card Colors', active: true }
             ],
             pageTitle: 'Card Colors',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -522,7 +522,7 @@ const router = new Router({
               { title: 'Table', active: true }
             ],
             pageTitle: 'Table',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -535,7 +535,7 @@ const router = new Router({
               { title: 'agGrid Table', active: true }
             ],
             pageTitle: 'agGrid Table',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
 
@@ -553,7 +553,7 @@ const router = new Router({
               { title: 'Alert', active: true }
             ],
             pageTitle: 'Alert',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -567,7 +567,7 @@ const router = new Router({
               { title: 'Avatar', active: true }
             ],
             pageTitle: 'Avatar',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -581,7 +581,7 @@ const router = new Router({
               { title: 'Breadcrumb', active: true }
             ],
             pageTitle: 'Breadcrumb',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -595,7 +595,7 @@ const router = new Router({
               { title: 'Button', active: true }
             ],
             pageTitle: 'Button',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -609,7 +609,7 @@ const router = new Router({
               { title: 'Button Group', active: true }
             ],
             pageTitle: 'Button Group',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -623,7 +623,7 @@ const router = new Router({
               { title: 'Chip', active: true }
             ],
             pageTitle: 'Chip',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -637,7 +637,7 @@ const router = new Router({
               { title: 'Collapse', active: true }
             ],
             pageTitle: 'Collapse',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -651,7 +651,7 @@ const router = new Router({
               { title: 'Dialogs', active: true }
             ],
             pageTitle: 'Dialogs',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -665,7 +665,7 @@ const router = new Router({
               { title: 'Divider', active: true }
             ],
             pageTitle: 'Divider',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -679,7 +679,7 @@ const router = new Router({
               { title: 'Dropdown', active: true }
             ],
             pageTitle: 'Dropdown',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -693,7 +693,7 @@ const router = new Router({
               { title: 'List', active: true }
             ],
             pageTitle: 'List',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -707,7 +707,7 @@ const router = new Router({
               { title: 'Loading', active: true }
             ],
             pageTitle: 'Loading',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -721,7 +721,7 @@ const router = new Router({
               { title: 'Navbar', active: true }
             ],
             pageTitle: 'Navbar',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -735,7 +735,7 @@ const router = new Router({
               { title: 'Notifications', active: true }
             ],
             pageTitle: 'Notifications',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -749,7 +749,7 @@ const router = new Router({
               { title: 'Pagination', active: true }
             ],
             pageTitle: 'Pagination',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -763,7 +763,7 @@ const router = new Router({
               { title: 'Popup', active: true }
             ],
             pageTitle: 'Popup',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -777,7 +777,7 @@ const router = new Router({
               { title: 'Progress', active: true }
             ],
             pageTitle: 'Progress',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -791,7 +791,7 @@ const router = new Router({
               { title: 'Sidebar', active: true }
             ],
             pageTitle: 'Sidebar',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -805,7 +805,7 @@ const router = new Router({
               { title: 'Slider', active: true }
             ],
             pageTitle: 'Slider',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -819,7 +819,7 @@ const router = new Router({
               { title: 'Tabs', active: true }
             ],
             pageTitle: 'Tabs',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -833,7 +833,7 @@ const router = new Router({
               { title: 'Tooltip', active: true }
             ],
             pageTitle: 'Tooltip',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -847,7 +847,7 @@ const router = new Router({
               { title: 'Upload', active: true }
             ],
             pageTitle: 'Upload',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
 
@@ -869,7 +869,7 @@ const router = new Router({
               { title: 'Select', active: true }
             ],
             pageTitle: 'Select',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -883,7 +883,7 @@ const router = new Router({
               { title: 'Switch', active: true }
             ],
             pageTitle: 'Switch',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -897,7 +897,7 @@ const router = new Router({
               { title: 'Checkbox', active: true }
             ],
             pageTitle: 'Checkbox',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -911,7 +911,7 @@ const router = new Router({
               { title: 'Radio', active: true }
             ],
             pageTitle: 'Radio',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -925,7 +925,7 @@ const router = new Router({
               { title: 'Input', active: true }
             ],
             pageTitle: 'Input',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -939,7 +939,7 @@ const router = new Router({
               { title: 'Number Input', active: true }
             ],
             pageTitle: 'Number Input',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -953,7 +953,7 @@ const router = new Router({
               { title: 'Textarea', active: true }
             ],
             pageTitle: 'Textarea',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         // -------------------------------------------------------------------------------------------------------------------------------------------
@@ -968,7 +968,7 @@ const router = new Router({
               { title: 'Form Layouts', active: true }
             ],
             pageTitle: 'Form Layouts',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -982,7 +982,7 @@ const router = new Router({
               { title: 'Form Wizard', active: true }
             ],
             pageTitle: 'Form Wizard',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -996,7 +996,7 @@ const router = new Router({
               { title: 'Form Validation', active: true }
             ],
             pageTitle: 'Form Validation',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1010,7 +1010,7 @@ const router = new Router({
               { title: 'Form Input Group', active: true }
             ],
             pageTitle: 'Form Input Group',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
 
@@ -1028,7 +1028,7 @@ const router = new Router({
               { title: 'Profile', active: true }
             ],
             pageTitle: 'Profile',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1042,7 +1042,7 @@ const router = new Router({
               { title: 'User Settings', active: true }
             ],
             pageTitle: 'Settings',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1056,7 +1056,7 @@ const router = new Router({
               { title: 'FAQ', active: true }
             ],
             pageTitle: 'FAQ',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1070,7 +1070,7 @@ const router = new Router({
               { title: 'KnowledgeBase', active: true }
             ],
             pageTitle: 'KnowledgeBase',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1085,7 +1085,7 @@ const router = new Router({
               { title: 'Category', active: true }
             ],
             parent: 'page-knowledge-base',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1101,7 +1101,7 @@ const router = new Router({
               { title: 'Question', active: true }
             ],
             parent: 'page-knowledge-base',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1115,7 +1115,7 @@ const router = new Router({
               { title: 'Search', active: true }
             ],
             pageTitle: 'Search',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1129,7 +1129,7 @@ const router = new Router({
               { title: 'Invoice', active: true }
             ],
             pageTitle: 'Invoice',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
 
@@ -1147,7 +1147,7 @@ const router = new Router({
               { title: 'Apex Charts', active: true }
             ],
             pageTitle: 'Apex Charts',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1161,7 +1161,7 @@ const router = new Router({
               { title: 'chartjs', active: true }
             ],
             pageTitle: 'chartjs',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1175,7 +1175,7 @@ const router = new Router({
               { title: 'echarts', active: true }
             ],
             pageTitle: 'echarts',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1189,7 +1189,7 @@ const router = new Router({
               { title: 'Google Map', active: true }
             ],
             pageTitle: 'Google Map',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
 
@@ -1208,7 +1208,7 @@ const router = new Router({
               { title: 'Select', active: true }
             ],
             pageTitle: 'Select',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1222,7 +1222,7 @@ const router = new Router({
               { title: 'Quill Editor', active: true }
             ],
             pageTitle: 'Quill Editor',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1236,7 +1236,7 @@ const router = new Router({
               { title: 'Drag & Drop', active: true }
             ],
             pageTitle: 'Drag & Drop',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1250,7 +1250,7 @@ const router = new Router({
               { title: 'Datepicker', active: true }
             ],
             pageTitle: 'Datepicker',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1264,7 +1264,7 @@ const router = new Router({
               { title: 'Datetime Picker', active: true }
             ],
             pageTitle: 'Datetime Picker',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1278,7 +1278,7 @@ const router = new Router({
               { title: 'Access Control', active: true }
             ],
             pageTitle: 'Access Control',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1292,7 +1292,7 @@ const router = new Router({
               { title: 'I18n', active: true }
             ],
             pageTitle: 'I18n',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1306,7 +1306,7 @@ const router = new Router({
               { title: 'Carousel', active: true }
             ],
             pageTitle: 'Carousel',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1320,7 +1320,7 @@ const router = new Router({
               { title: 'Clipboard', active: true }
             ],
             pageTitle: 'Clipboard',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1334,7 +1334,7 @@ const router = new Router({
               { title: 'Context Menu', active: true }
             ],
             pageTitle: 'Context Menu',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1348,7 +1348,7 @@ const router = new Router({
               { title: 'Star Ratings', active: true }
             ],
             pageTitle: 'Star Ratings',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1362,7 +1362,7 @@ const router = new Router({
               { title: 'Autocomplete', active: true }
             ],
             pageTitle: 'Autocomplete',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1376,7 +1376,7 @@ const router = new Router({
               { title: 'Tree', active: true }
             ],
             pageTitle: 'Tree',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1391,7 +1391,7 @@ const router = new Router({
               { title: 'Import', active: true }
             ],
             pageTitle: 'Import Excel',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1406,7 +1406,7 @@ const router = new Router({
               { title: 'Export', active: true }
             ],
             pageTitle: 'Export Excel',
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1421,7 +1421,7 @@ const router = new Router({
               { title: 'Export Selected', active: true }
             ],
             pageTitle: 'Export Excel',
-            rule: 'regular'
+            rule: 'doctor'
           }
         }
       ]
@@ -1441,7 +1441,7 @@ const router = new Router({
           name: 'auth-callback',
           component: () => import('@/views/Callback.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1449,7 +1449,7 @@ const router = new Router({
           name: 'login',
           component: () => import('@/views/pages/login/Login.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1457,7 +1457,7 @@ const router = new Router({
           name: 'register',
           component: () => import('@/views/pages/register/Register.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1465,7 +1465,7 @@ const router = new Router({
           name: 'forgot-password',
           component: () => import('@/views/pages/ForgotPassword.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1473,7 +1473,7 @@ const router = new Router({
           name: 'page-reset-password',
           component: () => import('@/views/pages/ResetPassword.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1481,7 +1481,7 @@ const router = new Router({
           name: 'page-lock-screen',
           component: () => import('@/views/pages/LockScreen.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1489,7 +1489,7 @@ const router = new Router({
           name: 'page-coming-soon',
           component: () => import('@/views/pages/ComingSoon.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1497,7 +1497,7 @@ const router = new Router({
           name: 'page-error-404',
           component: () => import('@/views/pages/Error404.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1505,7 +1505,7 @@ const router = new Router({
           name: 'page-error-500',
           component: () => import('@/views/pages/Error500.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1513,7 +1513,7 @@ const router = new Router({
           name: 'page-not-authorized',
           component: () => import('@/views/pages/NotAuthorized.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         },
         {
@@ -1521,7 +1521,7 @@ const router = new Router({
           name: 'page-maintenance',
           component: () => import('@/views/pages/Maintenance.vue'),
           meta: {
-            rule: 'regular'
+            rule: 'doctor'
           }
         }
       ]

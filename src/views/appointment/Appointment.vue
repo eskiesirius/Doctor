@@ -58,18 +58,33 @@
             </div>
 
             <template slot="thead">
+                <vs-th sort-key="clinic_name" v-if="$store.state.AppActiveUser.roles[0].name == 'Super Admin'">Clinic Name</vs-th>
                 <vs-th sort-key="patient_name">Patient Name</vs-th>
+                <vs-th sort-key="phone">Phone</vs-th>
+                <vs-th sort-key="email">Email</vs-th>
                 <vs-th sort-key="appointment_date">Appointment Date</vs-th>
                 <vs-th sort-key="status">Status</vs-th>
-                <vs-th>Action</vs-th>
+                <vs-th v-if="status != 'cancelled'">Action</vs-th>
             </template>
 
             <template slot-scope="{data}">
                 <tbody>
                     <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
+                        <vs-td v-if="$store.state.AppActiveUser.roles[0].name == 'Super Admin'">
+                            <p class="product-tenant font-medium truncate">{{ tr.clinic_name }}</p>
+                        </vs-td>
+
                         <vs-td>
                             <p class="product-name font-medium truncate">{{ tr.patient_name }}</p>
+                        </vs-td>
+
+                        <vs-td>
+                            <p class="product-phone font-medium truncate">{{ tr.phone }}</p>
+                        </vs-td>
+
+                        <vs-td>
+                            <p class="product-email font-medium truncate">{{ tr.email }}</p>
                         </vs-td>
 
                         <vs-td>
@@ -80,8 +95,8 @@
                             <vs-chip :color="getStatusColor(tr.status)" class="product-order-status">{{ tr.status | title }}</vs-chip>
                         </vs-td>
 
-                        <vs-td class="whitespace-no-wrap">
-                            <vs-button style="margin-right:1em" color="success" type="gradient" @click="approve(tr)">Approve</vs-button>
+                        <vs-td class="whitespace-no-wrap" v-if="status != 'cancelled'">
+                            <vs-button style="margin-right:1em" color="success" type="gradient" @click="approve(tr)" v-if="status == 'reserved'">Approve</vs-button>
                             <vs-button color="danger" type="gradient" @click="cancel(tr)">Cancel</vs-button>
                         </vs-td>
                     </vs-tr>
@@ -100,6 +115,7 @@ export default {
             selected: [],
             itemsPerPage: 4,
             isMounted: false,
+            status: 'reserved',
         }
     },
     computed: {
@@ -126,8 +142,14 @@ export default {
                 text: 'Appointment was successfully approved'
             })
         },
-        cancel(appointment) {
-            console.log(appointment)
+        async cancel(appointment) {
+            await this.$store.dispatch('appointment/cancelAppointment',appointment)
+
+            this.$vs.notify({
+                color: 'success',
+                title: 'Cancelled Appointment',
+                text: 'Appointment was successfully cancelled'
+            })
         },
         approveMark() {
             if (this.selected.length == 0)
@@ -141,7 +163,9 @@ export default {
                 accept: this.approveAccept
             })
         },
-        approveAccept(){
+        async approveAccept(){
+            await this.$store.dispatch('appointment/approveMarkAppointment',this.selected)
+            this.selected = []
             this.$vs.notify({
                 color: 'success',
                 title: 'Approved Appointments',
@@ -160,7 +184,9 @@ export default {
                 accept: this.cancelAccept
             })
         },
-        cancelAccept(){
+        async cancelAccept(){
+            await this.$store.dispatch('appointment/cancelMarkAppointment',this.selected)
+            this.selected = []
             this.$vs.notify({
                 color: 'success',
                 title: 'Cancelled Appointments',
@@ -186,7 +212,8 @@ export default {
     },
     mounted () {
         this.isMounted = true
-        this.$store.dispatch('appointment/fetchAppointments',this.$route.meta.status)
+        this.status = this.$route.meta.status
+        this.$store.dispatch('appointment/fetchAppointments',this.status)
     }
 }
 </script>
