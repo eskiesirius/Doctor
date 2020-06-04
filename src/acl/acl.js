@@ -4,7 +4,7 @@ import router from '@/router'
 
 Vue.use(AclInstaller)
 
-let initialRole = 'doctor'
+let initialRole = 'Patient'
 
 const userInfo = JSON.parse(localStorage.getItem('userInfo'))
 if (userInfo && userInfo.roles) initialRole = userInfo.roles[0].name
@@ -17,6 +17,6 @@ export default new AclCreate({
   globalRules: {
     superAdmin  : new AclRule('Super Admin').generate(),
     doctor 			: new AclRule('Doctor').or('Super Admin').generate(),
-    patient			: new AclRule('Doctor').or('Super Admin').generate(),
+    patient			: new AclRule('Doctor').or('Super Admin').or('Patient').generate(),
   }
 })

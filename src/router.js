@@ -1455,7 +1455,7 @@ const router = new Router({
           name: 'auth-callback',
           component: () => import('@/views/Callback.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1463,7 +1463,7 @@ const router = new Router({
           name: 'login',
           component: () => import('@/views/pages/login/Login.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1471,7 +1471,7 @@ const router = new Router({
           name: 'register',
           component: () => import('@/views/pages/register/Register.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1479,7 +1479,7 @@ const router = new Router({
           name: 'forgot-password',
           component: () => import('@/views/pages/ForgotPassword.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1487,7 +1487,7 @@ const router = new Router({
           name: 'page-reset-password',
           component: () => import('@/views/pages/ResetPassword.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1495,7 +1495,7 @@ const router = new Router({
           name: 'page-lock-screen',
           component: () => import('@/views/pages/LockScreen.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1503,7 +1503,7 @@ const router = new Router({
           name: 'page-coming-soon',
           component: () => import('@/views/pages/ComingSoon.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1511,7 +1511,7 @@ const router = new Router({
           name: 'page-error-404',
           component: () => import('@/views/pages/Error404.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1519,7 +1519,7 @@ const router = new Router({
           name: 'page-error-500',
           component: () => import('@/views/pages/Error500.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1527,7 +1527,7 @@ const router = new Router({
           name: 'page-not-authorized',
           component: () => import('@/views/pages/NotAuthorized.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         },
         {
@@ -1535,7 +1535,7 @@ const router = new Router({
           name: 'page-maintenance',
           component: () => import('@/views/pages/Maintenance.vue'),
           meta: {
-            rule: 'doctor'
+            rule: 'patient'
           }
         }
       ]
