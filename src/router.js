@@ -195,17 +195,17 @@ const router = new Router({
           }
         },
         {
-          path: '/chat',
-          name: 'chat',
-          component: () => import('@/views/chat/Chat.vue'),
+          path: '/user',
+          name: 'user',
+          component: () => import('@/views/user/User.vue'),
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Chat', active: true }
+              { title: 'User', active: true }
             ],
-            parent: 'chat',
-            pageTitle: 'Chat',
-            rule: 'doctor'
+            parent: 'user',
+            pageTitle: 'User',
+            rule: 'superAdmin'
           }
         },
         {

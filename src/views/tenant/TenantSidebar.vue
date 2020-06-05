@@ -85,6 +85,13 @@ export default {
     watch: {
         isSidebarActive (val) {
             if (!val) return
+
+            this.codeErrorMessage = ''
+            this.clinicNameErrorMessage = ''
+            this.clinicAddressErrorMessage = ''
+            this.phoneErrorMessage = ''
+            this.incomeErrorMessage = ''
+            
             if (Object.entries(this.data).length === 0) {
                 this.initValues()
                 this.$validator.reset()

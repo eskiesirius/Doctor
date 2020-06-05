@@ -128,11 +128,18 @@ export default [
         i18n: 'Appointment'
       },
       {
+        url: '/user',
+        slug: 'user',
+        name: 'User Management',
+        icon: 'UserIcon',
+        i18n: 'User Management'
+      },
+      {
         url: '/settings',
         slug: 'settings',
         name: 'User Settings',
         icon: 'SettingsIcon',
-        i18n: 'UserSettings'
+        i18n: 'User Settings'
       },
     ]
   },
