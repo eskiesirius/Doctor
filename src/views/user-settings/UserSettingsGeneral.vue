@@ -2,7 +2,7 @@
     <vx-card no-shadow>
 
         <!-- Img Row -->
-        <div class="flex flex-wrap items-center mb-base">
+        <div class="flex flex-wrap items-center mb-base" v-if="false">
             <vs-avatar :src="image" size="70px" class="mr-4 mb-4" />
             <div>
                 <input type="file" ref="file" style="display: none" accept="image/*" @change="onChange">
@@ -13,41 +13,15 @@
         </div>
 
         <!-- Info -->
-        <vs-input class="w-full mb-base" label-placeholder="Name" v-model="name"></vs-input>
-        <vs-input class="w-full mb-base" label-placeholder="Email" v-model="email" disabled></vs-input>
-        <vs-input class="w-full mb-base" label-placeholder="Phone"></vs-input>
-        <vs-input class="w-full mb-base" label-placeholder="Hospital Name"></vs-input>
+        <vs-input class="w-full mb-base" label-placeholder="First Name" v-model="first_name"></vs-input>
+        <vs-input class="w-full mb-base" label-placeholder="Last Name" v-model="last_name"></vs-input>
+        <vs-input class="w-full mb-base" label-placeholder="Phone" v-model="phone"></vs-input>
 
-        <vs-alert icon-pack="feather" icon="icon-info" class="h-full my-4" color="warning">
-            <span>Your account is not verified. <a href="#" class="hover:underline">Resend Confirmation</a></span>
-        </vs-alert>
+        <!-- Biography -->
+        <vs-textarea class="w-full mb-base" label="Biography" v-model="biography" placeholder="Your biography" />
 
-        <!-- Bio -->
-        <vs-textarea label="Bio" v-model="bio" placeholder="Your bio..." />
-
-        <!-- DOB -->
-        <div class="mt-8">
-            <label class="text-sm">Birth Date</label>
-            <flat-pickr v-model="dob" :config="{ dateFormat: 'd F Y' }" class="w-full" />
-        </div>
-
-        <!-- Country -->
-        <div class="mt-8">
-            <label class="text-sm">Country</label>
-            <v-select v-model="country" :options="countryOptions" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
-        </div>
-
-        <!-- Languages -->
-        <div class="mt-8">
-            <label class="text-sm">Languages</label>
-            <v-select v-model="lang_known" multiple :closeOnSelect="false" :options="langOptions" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
-        </div>
-
-        <!-- Mobile Number -->
-        <vs-input class="w-full mt-8" type="number" label-placeholder="Mobile" v-model="mobile" />
-
-        <!-- Website  -->
-        <vs-input class="w-full mt-8" label-placeholder="Website" v-model="website" />
+        <!-- Specialization -->
+        <vs-input class="w-full" label-placeholder="Specialization" v-model="specialization"></vs-input>
 
         <!-- Gender -->
         <div class="mt-8 mb-base">
@@ -55,7 +29,6 @@
             <div class="mt-2">
                 <vs-radio v-model="gender" vs-value="male" class="mr-4">Male</vs-radio>
                 <vs-radio v-model="gender" vs-value="female" class="mr-4">Female</vs-radio>
-                <vs-radio v-model="gender" vs-value="other">Other</vs-radio>
             </div>
         </div>
 
@@ -78,43 +51,24 @@ export default {
   },
   mounted(){
     this.$store.dispatch('auth/getUserInfo').then(({data}) => {
-       this.name = data.name
-       this.email = data.email
+
+        this.first_name = data.first_name
+        this.last_name = data.last_name
+        this.phone = data.phone
+        this.biography = data.biography
+        this.specialization = data.specialization
+        this.gender = data.gender
     })
   },
   data () {
     return {
-      image: this.$store.state.AppActiveUser.image,
-      bio: this.$store.state.AppActiveUser.about,
-      name: '',
-      email: '',
-      dob: null,
-      country: 'USA',
-      lang_known: ['English', 'Russian'],
-      gender: 'male',
-      mobile: '',
-      website: '',
-      // Options
-      countryOptions: [
-        { label: 'Australia',  value: 'australia'  },
-        { label: 'France',     value: 'france'     },
-        { label: 'Germany',    value: 'germany'    },
-        { label: 'India',      value: 'india'      },
-        { label: 'Jordan',     value: 'jordan'     },
-        { label: 'Morocco',    value: 'morocco'    },
-        { label: 'Portuguese', value: 'portuguese' },
-        { label: 'Syria',      value: 'syria'      },
-        { label: 'USA',        value: 'usa'        }
-      ],
-      langOptions: [
-        { label: 'English',  value: 'english'  },
-        { label: 'Spanish',  value: 'spanish'  },
-        { label: 'French',   value: 'french'   },
-        { label: 'Russian',  value: 'russian'  },
-        { label: 'German',   value: 'german'   },
-        { label: 'Arabic',   value: 'arabic'   },
-        { label: 'Sanskrit', value: 'sanskrit' }
-      ]
+        image: this.$store.state.AppActiveUser.image,
+        first_name: this.$store.state.AppActiveUser.first_name,
+        last_name: this.$store.state.AppActiveUser.last_name,
+        phone: this.$store.state.AppActiveUser.phone,
+        biography: this.$store.state.AppActiveUser.biography,
+        specialization: this.$store.state.AppActiveUser.specialization,
+        gender: this.$store.state.AppActiveUser.gender,
     }
   },
   computed: {
@@ -123,27 +77,24 @@ export default {
     }
   },
   methods: {
-    update() {
-      let data = new FormData();
-      data.append('name', 'my-picture');
-      data.append('file', event.target.files[0]); 
-
-      let config = {
-        header : {
-          'Content-Type' : 'image/png'
+    async update() {
+        const payload = {
+            first_name:         this.first_name,
+            last_name:          this.last_name,
+            phone:              this.phone,
+            biography:          this.biography,
+            specialization:     this.specialization,
+            gender:             this.gender
         }
-      }
-      this.$store.dispatch('user_settings/updateProfile',this.name)
+      
+        await this.$store.dispatch('user_settings/updateProfile',payload)
+
+        this.$vs.notify({
+            color: 'success',
+            title: 'Profile Updated',
+            text: 'Profile updated successfully.'
+        })
     },
-    successUpload(){
-      console.log('success')
-    },
-    onChange(e) {
-      const file = e.target.files[0]
-      this.image = file
-      this.image = URL.createObjectURL(file)
-      console.log(this.image)
-    }
   }
 }
 </script>

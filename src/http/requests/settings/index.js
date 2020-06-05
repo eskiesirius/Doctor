@@ -3,7 +3,7 @@ import store from '../../../store/store.js'
 
 export default {
   updateProfile(name){
-    return axios.patch('/api/user',{
+    return axios.patch('/api/user-info',{
       name
     })
   }
