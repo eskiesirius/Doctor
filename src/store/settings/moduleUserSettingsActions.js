@@ -21,5 +21,24 @@ export default {
 			.catch((error) => { reject(error) })
 		})
 	},
+	getTime ({ commit }) {
+		return new Promise((resolve, reject) => {
+			axios.get('/api/user-info/time')
+			.then((response) => {
+				commit('SET_TIME',response.data)
+				resolve(response)
+			})
+			.catch((error) => { reject(error) })
+		})
+	},
+	setTime ({ commit }, payload) {
+		return new Promise((resolve, reject) => {
+			axios.post('/api/user-info/time',payload)
+			.then((response) => {
+				resolve(response.data)
+			})
+			.catch((error) => { reject(error) })
+		})
+	},
 }
 

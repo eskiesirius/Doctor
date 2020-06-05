@@ -12,19 +12,9 @@
                 <user-settings-change-password />
             </div>
         </vs-tab>
-        <vs-tab icon-pack="feather" icon="icon-github" :label="!isSmallerScreen ? 'Social Links' : ''">
-            <div class="tab-social-links md:ml-4 md:mt-0 mt-4 ml-0">
-                <user-settings-social-links />
-            </div>
-        </vs-tab>
-        <vs-tab icon-pack="feather" icon="icon-link-2" :label="!isSmallerScreen ? 'Connections' : ''">
+        <vs-tab icon-pack="feather" icon="icon-clock" :label="!isSmallerScreen ? 'Time Schedule' : ''">
             <div class="tab-text md:ml-4 md:mt-0 mt-4 ml-0">
-                <user-settings-connections />
-            </div>
-        </vs-tab>
-        <vs-tab icon-pack="feather" icon="icon-bell" :label="!isSmallerScreen ? 'Notifications' : ''">
-            <div class="tab-text md:ml-4 md:mt-0 mt-4 ml-0">
-                <user-settings-notifications />
+                <user-settings-time />
             </div>
         </vs-tab>
     </vs-tabs>
@@ -33,17 +23,13 @@
 <script>
 import UserSettingsGeneral from './UserSettingsGeneral.vue'
 import UserSettingsChangePassword from './UserSettingsChangePassword.vue'
-import UserSettingsSocialLinks from './UserSettingsSocialLinks.vue'
-import UserSettingsConnections from './UserSettingsConnections.vue'
-import UserSettingsNotifications from './UserSettingsNotifications.vue'
+import UserSettingsTime from './UserSettingsTime.vue'
 
 export default {
   components: {
     UserSettingsGeneral,
     UserSettingsChangePassword,
-    UserSettingsSocialLinks,
-    UserSettingsConnections,
-    UserSettingsNotifications
+    UserSettingsTime
   },
   data () {
     return {
