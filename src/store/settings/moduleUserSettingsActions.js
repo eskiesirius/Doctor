@@ -11,6 +11,15 @@ export default {
 			})
 			.catch((error) => { reject(error) })
 		})
-	}
+	},
+	changePassword ({ commit }, payload) {
+		return new Promise((resolve, reject) => {
+			axios.patch('/api/user-info/change-password',payload)
+			.then((response) => {
+				resolve(response)
+			})
+			.catch((error) => { reject(error) })
+		})
+	},
 }
 
