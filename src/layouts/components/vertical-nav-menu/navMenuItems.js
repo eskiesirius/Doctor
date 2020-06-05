@@ -94,44 +94,10 @@ export default [
         ]
       },
       {
-        url: null,
-        name: 'Doctors',
-        icon: 'UsersIcon',
-        i18n: 'Doctors',
-        submenu: [
-          {
-            url: '/doctors',
-            slug: 'doctors',
-            name: 'List',
-            i18n: 'List',
-          },
-          {
-            url: '/doctors/favorite-list',
-            slug: 'favorite-list',
-            name: 'Favorites',
-            i18n: 'Favorites',
-          }
-        ]
-      },
-      {
-        url: '/chat',
-        name: 'Chat',
-        slug: 'chat',
-        icon: 'MessageSquareIcon',
-        i18n: 'Chat'
-      },
-      {
-        url: '/appointment',
-        name: 'Appointment',
-        slug: 'appointment',
-        icon: 'CalendarIcon',
-        i18n: 'Appointment'
-      },
-      {
         url: '/user',
         slug: 'user',
         name: 'User Management',
-        icon: 'UserIcon',
+        icon: 'UsersIcon',
         i18n: 'User Management'
       },
       {
