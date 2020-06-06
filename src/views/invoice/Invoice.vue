@@ -94,8 +94,12 @@
                         <vs-td>P{{ invoice.amount }}</vs-td>
                     </vs-tr>
                     <vs-tr>
+                        <vs-th class="pointer-events-none">SERVICE FEE</vs-th>
+                        <vs-td>P{{ invoice.service_fee }}</vs-td>
+                    </vs-tr>
+                    <vs-tr>
                         <vs-th class="pointer-events-none">TOTAL</vs-th>
-                        <vs-td>P{{ invoice.amount }}</vs-td>
+                        <vs-td>P{{ total }}</vs-td>
                     </vs-tr>
                 </vs-table>
             </div>
@@ -121,7 +125,9 @@ export default{
         }
     },
     computed: {
-
+        total() {
+            return parseFloat(parseFloat(this.invoice.amount) + parseFloat(this.invoice.service_fee)).toFixed(2)
+        }
     },
     methods: {
         printInvoice () {
