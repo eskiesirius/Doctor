@@ -137,6 +137,20 @@ const router = new Router({
           }
         },
         {
+          path: '/calendar',
+          name: 'calendar',
+          component: () => import('@/views/calendar/Calendar.vue'),
+          meta: {
+            breadcrumb: [
+              { title: 'Home', url: '/' },
+              { title: 'Calendar', active: true }
+            ],
+            parent: 'calendar',
+            pageTitle: 'Calendar',
+            rule: 'doctor'
+          }
+        },
+        {
           path: '/invoice',
           name: 'invoice',
           component: () => import('@/views/invoice/InvoiceList.vue'),

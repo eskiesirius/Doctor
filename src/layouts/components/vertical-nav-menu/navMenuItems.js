@@ -94,11 +94,11 @@ export default [
         ]
       },
       {
-        url: '/user',
-        slug: 'user',
-        name: 'User Management',
-        icon: 'UsersIcon',
-        i18n: 'User Management'
+        url: '/calendar',
+        name: 'Calendar',
+        slug: 'calendar',
+        icon: 'CalendarIcon',
+        i18n: 'Calendar'
       },
       {
         url: '/invoice',
@@ -106,6 +106,13 @@ export default [
         name: 'Invoice',
         icon: 'InfoIcon',
         i18n: 'Invoice'
+      },
+      {
+        url: '/user',
+        slug: 'user',
+        name: 'User Management',
+        icon: 'UsersIcon',
+        i18n: 'User Management'
       },
       {
         url: '/settings',
