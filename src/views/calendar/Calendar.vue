@@ -65,7 +65,16 @@
       </calendar-view>
     </div>
     <vs-popup class="holamundo" title="Appointment" :active.sync="popupActive">
-      <p> {{title}}</p>
+      <p>
+        {{title}}
+        <br />
+        <br />
+        Patient Details
+        <br />
+        Email: {{email}}
+        <br />
+        Phone: {{phone}}
+      </p>
     </vs-popup>
   </div>
 </template>
@@ -90,6 +99,8 @@ export default {
             showDate: new Date(),
             appointments: [],
             title: '',
+            phone: '',
+            email: '',
 
             langHe: he,
             langEn: en,
@@ -128,7 +139,10 @@ export default {
             this.showDate = this.$refs.calendar.getIncrementedPeriod(val)
         },
         openAppointment(appointment) {
+            console.log(appointment)
             this.title = appointment.title
+            this.phone = appointment.originalEvent.phone
+            this.email = appointment.originalEvent.email
             this.popupActive = true
         }
     },
