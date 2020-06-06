@@ -14,14 +14,14 @@
 
         <!-- Info -->
         <vs-input class="w-full" label-placeholder="First Name" v-model="first_name"></vs-input>
-        <span class="text-danger text-sm mb-base">{{ errorFirst_name }}</span>
-        <vs-input class="w-full" label-placeholder="Last Name" v-model="last_name"></vs-input>
+        <span class="text-danger text-sm">{{ errorFirst_name }}</span>
+        <vs-input class="w-full mt-8" label-placeholder="Last Name" v-model="last_name"></vs-input>
         <span class="text-danger text-sm mb-base">{{ errorLast_name }}</span>
-        <vs-input class="w-full" label-placeholder="Phone" v-model="phone"></vs-input>
-        <span class="text-danger text-sm mb-base">{{ errorPhone }}</span>
+        <vs-input class="w-full mt-8" label-placeholder="Phone" v-model="phone"></vs-input>
+        <span class="text-danger text-sm">{{ errorPhone }}</span>
 
         <!-- Biography -->
-        <vs-textarea class="w-full mb-base" label="Biography" v-model="biography" placeholder="Your biography" />
+        <vs-textarea class="w-full mb-base mt-8" label="Biography" v-model="biography" placeholder="Your biography" />
 
         <!-- Specialization -->
         <vs-input class="w-full" label-placeholder="Specialization" v-model="specialization"></vs-input>
@@ -37,7 +37,7 @@
         <span class="text-danger text-sm mb-base">{{ errorGender }}</span>
 
         <!-- Price per consultation -->
-        <vs-input class="w-full" label-placeholder="Price per Consultation" v-model="price"></vs-input>
+        <vs-input class="w-full mt-8" label-placeholder="Price per Consultation" v-model="price"></vs-input>
         <span class="text-danger text-sm mb-base">{{ errorPrice }}</span>
 
         <!-- Save & Reset Button -->
