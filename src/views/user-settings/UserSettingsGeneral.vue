@@ -13,9 +13,12 @@
         </div>
 
         <!-- Info -->
-        <vs-input class="w-full mb-base" label-placeholder="First Name" v-model="first_name"></vs-input>
-        <vs-input class="w-full mb-base" label-placeholder="Last Name" v-model="last_name"></vs-input>
-        <vs-input class="w-full mb-base" label-placeholder="Phone" v-model="phone"></vs-input>
+        <vs-input class="w-full" label-placeholder="First Name" v-model="first_name"></vs-input>
+        <span class="text-danger text-sm mb-base">{{ errorFirst_name }}</span>
+        <vs-input class="w-full" label-placeholder="Last Name" v-model="last_name"></vs-input>
+        <span class="text-danger text-sm mb-base">{{ errorLast_name }}</span>
+        <vs-input class="w-full" label-placeholder="Phone" v-model="phone"></vs-input>
+        <span class="text-danger text-sm mb-base">{{ errorPhone }}</span>
 
         <!-- Biography -->
         <vs-textarea class="w-full mb-base" label="Biography" v-model="biography" placeholder="Your biography" />
@@ -24,13 +27,18 @@
         <vs-input class="w-full" label-placeholder="Specialization" v-model="specialization"></vs-input>
 
         <!-- Gender -->
-        <div class="mt-8 mb-base">
+        <div class="mt-8">
             <label class="text-sm">Gender</label>
             <div class="mt-2">
                 <vs-radio v-model="gender" vs-value="male" class="mr-4">Male</vs-radio>
                 <vs-radio v-model="gender" vs-value="female" class="mr-4">Female</vs-radio>
             </div>
         </div>
+        <span class="text-danger text-sm mb-base">{{ errorGender }}</span>
+
+        <!-- Price per consultation -->
+        <vs-input class="w-full" label-placeholder="Price per Consultation" v-model="price"></vs-input>
+        <span class="text-danger text-sm mb-base">{{ errorPrice }}</span>
 
         <!-- Save & Reset Button -->
         <div class="flex flex-wrap items-center justify-end">
@@ -58,6 +66,7 @@ export default {
         this.biography = data.biography
         this.specialization = data.specialization
         this.gender = data.gender
+        this.price = data.price
     })
   },
   data () {
@@ -69,6 +78,13 @@ export default {
         biography: this.$store.state.AppActiveUser.biography,
         specialization: this.$store.state.AppActiveUser.specialization,
         gender: this.$store.state.AppActiveUser.gender,
+        price: this.$store.state.AppActiveUser.price,
+
+        errorFirst_name: '',
+        errorLast_name: '',
+        errorPhone: '',
+        errorGender: '',
+        errorPrice: '',
     }
   },
   computed: {
@@ -77,23 +93,56 @@ export default {
     }
   },
   methods: {
-    async update() {
+    update() {
+        this.errorFirst_name = ''
+        this.errorLast_name = ''
+        this.errorPhone = ''
+        this.errorGender = ''
+        this.errorPrice = ''
+
         const payload = {
             first_name:         this.first_name,
             last_name:          this.last_name,
             phone:              this.phone,
             biography:          this.biography,
             specialization:     this.specialization,
-            gender:             this.gender
+            gender:             this.gender,
+            price:              this.price
         }
       
-        await this.$store.dispatch('user_settings/updateProfile',payload)
-
-        this.$vs.notify({
-            color: 'success',
-            title: 'Profile Updated',
-            text: 'Profile updated successfully.'
+        this.$store.dispatch('user_settings/updateProfile',payload).then(() => {
+            this.$vs.notify({
+                color: 'success',
+                title: 'Profile Updated',
+                text: 'Profile updated successfully.'
+            })
         })
+        .catch(error => {
+            this.$vs.loading.close()
+            this.$vs.notify({
+                title: 'Error',
+                text: error.response.data.message,
+                iconPack: 'feather',
+                icon: 'icon-alert-circle',
+                color: 'danger'
+            })
+
+            if (error.response.data.errors.first_name) {
+                this.errorFirst_name = error.response.data.errors.first_name[0]    
+            } 
+            if (error.response.data.errors.last_name) {
+                this.errorLast_name = error.response.data.errors.last_name[0]    
+            } 
+            if (error.response.data.errors.phone) {
+                this.errorPhone = error.response.data.errors.phone[0]    
+            } 
+            if (error.response.data.errors.gender) {
+                this.errorGender = error.response.data.errors.gender[0]    
+            } 
+            if (error.response.data.errors.price) {
+                this.errorPrice = error.response.data.errors.price[0]    
+            } 
+        })      
     },
   }
 }
