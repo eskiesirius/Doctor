@@ -1,9 +1,7 @@
 <template>
   <div id="data-list-list-view" class="data-list-container">
 
-    <tenant-sidebar :isSidebarActive="addNewDataSidebar" @closeSidebar="toggleDataSidebar" :data="sidebarData" />
-
-    <vs-table ref="table" multiple v-model="selected" pagination :max-items="itemsPerPage" search :data="tenants">
+    <vs-table ref="table" multiple v-model="selected" pagination :max-items="itemsPerPage" search :data="invoices">
 
       <div slot="header" class="flex flex-wrap-reverse items-center flex-grow justify-between">
 
@@ -27,18 +25,12 @@
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
-
-          <!-- ADD NEW -->
-          <div class="btn-add-new p-3 mb-4 mr-4 rounded-lg cursor-pointer flex items-center justify-center text-lg font-medium text-base text-primary border border-solid border-primary" @click="addNewData">
-              <feather-icon icon="PlusIcon" svgClasses="h-4 w-4" />
-              <span class="ml-2 text-base text-primary">Add New</span>
-          </div>
         </div>
 
         <!-- ITEMS PER PAGE -->
         <vs-dropdown vs-trigger-click class="cursor-pointer mb-4 mr-4 items-per-page-handler">
           <div class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium">
-            <span class="mr-2">{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ tenants.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : tenants.length }} of {{ queriedItems }}</span>
+            <span class="mr-2">{{ currentPage * itemsPerPage - (itemsPerPage - 1) }} - {{ invoices.length - currentPage * itemsPerPage > 0 ? currentPage * itemsPerPage : invoices.length }} of {{ queriedItems }}</span>
             <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
           </div>
           <vs-dropdown-menu>
@@ -60,10 +52,13 @@
       </div>
 
       <template slot="thead">
-        <vs-th sort-key="code">Code</vs-th>
+        <vs-th sort-key="invoice_number">Invoice Number</vs-th>
         <vs-th sort-key="clinic_name">Clinic Name</vs-th>
+        <vs-th sort-key="patient_name">Patient Name</vs-th>
         <vs-th sort-key="phone">Phone</vs-th>
-        <vs-th sort-key="income">Income</vs-th>
+        <vs-th sort-key="email">Email</vs-th>
+        <vs-th sort-key="amount">Amount</vs-th>
+        <vs-th sort-key="paid_on">Paid On</vs-th>
         <vs-th>Action</vs-th>
       </template>
 
@@ -72,21 +67,31 @@
             <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
 
               <vs-td>
-                <p class="product-code font-medium truncate">{{ tr.code }}</p>
+                <p class="product-code font-medium truncate">{{ tr.invoice_number }}</p>
               </vs-td>
               <vs-td>
                 <p class="product-clinic_name font-medium truncate">{{ tr.clinic_name }}</p>
               </vs-td>
               <vs-td>
-                <p class="product-phone font-medium truncate">{{ tr.phone }}</p>
+                <p class="product-patient_name font-medium truncate">{{ tr.appointment.patient_name }}</p>
+              </vs-td>
+              <vs-td>
+                <p class="product-phone font-medium truncate">{{ tr.appointment.phone }}</p>
+              </vs-td>
+              <vs-td>
+                <p class="product-email font-medium truncate">{{ tr.appointment.email }}</p>
               </vs-td>
 
               <vs-td>
-                <p class="product-price">P{{ tr.income }}</p>
+                <p class="product-price">P{{ tr.amount }}</p>
+              </vs-td>
+
+              <vs-td>
+                <p class="product-paid_on font-medium truncate">{{ tr.paid_on }}</p>
               </vs-td>
 
               <vs-td class="whitespace-no-wrap">
-                <feather-icon icon="EditIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current" @click.stop="editData(tr)" />
+                <feather-icon icon="EyeIcon" svgClasses="w-5 h-5 hover:text-primary stroke-current" @click.stop="showData(tr)" />
                 <feather-icon icon="TrashIcon" svgClasses="w-5 h-5 hover:text-danger stroke-current" class="ml-2" @click.stop="deleteData(tr.id)" />
               </vs-td>
 
@@ -98,24 +103,16 @@
 </template>
 
 <script>
-import TenantSidebar from './TenantSidebar.vue'
-import moduleTenant from '@/store/tenant/moduleTenant.js'
+import moduleInvoice from '@/store/invoice/moduleInvoice.js'
 
 export default {
-  components: {
-    TenantSidebar
-  },
   data () {
     return {
       selected: [],
-      // tenants: [],
+      // invoices: [],
       itemsPerPage: 4,
       isMounted: false,
       selectedId: null,
-
-      // Data Sidebar
-      addNewDataSidebar: false,
-      sidebarData: {}
     }
   },
   computed: {
@@ -125,44 +122,36 @@ export default {
       }
       return 0
     },
-    tenants () {
-      return this.$store.state.tenant.tenants
+    invoices () {
+      return this.$store.state.invoice.invoices
     },
     queriedItems () {
-      return this.$refs.table ? this.$refs.table.queriedResults.length : this.tenants.length
+      return this.$refs.table ? this.$refs.table.queriedResults.length : this.invoices.length
     }
   },
   methods: {
-    addNewData () {
-      this.sidebarData = {}
-      this.toggleDataSidebar(true)
-    },
     deleteData (id) {
         this.selectedId = id
 
         this.$vs.dialog({
             type: 'confirm',
             color: 'danger',
-            title: `Delete Tenant`,
-            text: 'Are you sure you want to delete this tenant?',
+            title: `Delete Invoice`,
+            text: 'Are you sure you want to delete this invoice?',
             accept: this.deleteAccept
         })
     },
     async deleteAccept() {
-        await this.$store.dispatch('tenant/deleteTenant', this.selectedId)
+        await this.$store.dispatch('invoice/deleteInvoice', this.selectedId)
         this.selectedId = null
         this.$vs.notify({
             color: 'success',
-            title: 'Tenant Deleted',
-            text: 'The tenant was successfully deleted'
+            title: 'Invoice Deleted',
+            text: 'The invoice was successfully deleted'
         })
     },
-    editData (data) {
-      this.sidebarData = data
-      this.toggleDataSidebar(true)
-    },
-    toggleDataSidebar (val = false) {
-      this.addNewDataSidebar = val
+    showData (invoice) {
+        this.$router.push({ name: 'invoice-details', params: { id: invoice.id, invoice:invoice } })
     },
     deleteMark() {
         if (this.selected.length == 0)
@@ -171,27 +160,27 @@ export default {
         this.$vs.dialog({
             type: 'confirm',
             color: 'danger',
-            title: `Delete Tenants`,
-            text: 'Are you sure you want to delete the selected tenants?',
+            title: `Delete Invoices`,
+            text: 'Are you sure you want to delete the selected invoices?',
             accept: this.deleteMarkAccept
         })
     },
     async deleteMarkAccept() {
-        await this.$store.dispatch('tenant/deleteMarkTenant', this.selected)
+        await this.$store.dispatch('invoice/deleteMarkInvoice', this.selected)
         this.selected = []
         this.$vs.notify({
             color: 'success',
-            title: 'Tenants Deleted',
-            text: 'The selected tenants was successfully deleted'
+            title: 'Invoices Deleted',
+            text: 'The selected invoices was successfully deleted'
         })
     }
   },
   created () {
-    if (!moduleTenant.isRegistered) {
-      this.$store.registerModule('tenant', moduleTenant)
-      moduleTenant.isRegistered = true
+    if (!moduleInvoice.isRegistered) {
+      this.$store.registerModule('invoice', moduleInvoice)
+      moduleInvoice.isRegistered = true
     }
-    this.$store.dispatch('tenant/fetchTenants')
+    this.$store.dispatch('invoice/fetchInvoices')
   },
   mounted () {
     this.isMounted = true

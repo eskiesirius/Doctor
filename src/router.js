@@ -138,59 +138,31 @@ const router = new Router({
           }
         },
         {
-          path: '/doctors',
-          name: 'doctors',
-          component: () => import('@/views/doctors-list/DoctorsList.vue'),
+          path: '/invoice',
+          name: 'invoice',
+          component: () => import('@/views/invoice/InvoiceList.vue'),
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Doctors', active: true }
+              { title: 'Invoice', active: true }
             ],
-            pageTitle: 'Doctors List',
+            parent: 'invoice',
+            pageTitle: 'Invoice',
             rule: 'doctor'
           }
         },
         {
-          path: '/doctors/:uuid/details',
-          name: 'doctors-detail-view',
-          component: () => import('./views/doctors-list/DoctorsDetailView.vue'),
+          path: '/invoice/:id',
+          name: 'invoice-details',
+          component: () => import('@/views/invoice/Invoice.vue'),
           meta: {
             breadcrumb: [
               { title: 'Home', url: '/' },
-              { title: 'Doctors', url:'/doctors'},
-              { title: 'Doctor Details', active: true }
+              { title: 'Invoice', url: '/invoice' },
+              { title: 'Invoice Details', active: true }
             ],
-            parent: 'doctors',
-            pageTitle: 'Doctor Details',
-            rule: 'doctor'
-          }
-        },
-        {
-          path: '/doctors/:uuid/appointment',
-          name: 'set-appointment-doctor',
-          component: () => import('./views/doctors-list/SetAppointment.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'Doctors', url:'/doctors'},
-              { title: 'Set Appointment', active: true }
-            ],
-            parent: 'doctors',
-            pageTitle: 'Set Appointment',
-            rule: 'doctor'
-          }
-        },
-        {
-          path: '/doctors/favorite-list',
-          name: 'doctors-favorite-list',
-          component: () => import('./views/doctors-list/DoctorsFavoriteList.vue'),
-          meta: {
-            breadcrumb: [
-              { title: 'Home', url: '/' },
-              { title: 'Doctors', url:'/doctors'},
-              { title: 'Favorite List', active: true }
-            ],
-            pageTitle: 'Favorite List',
+            parent: 'invoice',
+            pageTitle: 'Invoice Details',
             rule: 'doctor'
           }
         },

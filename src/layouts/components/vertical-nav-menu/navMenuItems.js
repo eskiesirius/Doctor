@@ -101,6 +101,13 @@ export default [
         i18n: 'User Management'
       },
       {
+        url: '/invoice',
+        slug: 'invoice',
+        name: 'Invoice',
+        icon: 'InfoIcon',
+        i18n: 'Invoice'
+      },
+      {
         url: '/settings',
         slug: 'settings',
         name: 'User Settings',
