@@ -45,28 +45,27 @@ const router = new Router({
         // =============================================================================
         {
           path: '/',
-          redirect: '/dashboard/analytics'
+          redirect: '/dashboard'
         },
+        // =============================================================================
+        // My Routes
+        // =============================================================================
         {
-          path: '/dashboard/analytics',
-          name: 'dashboard-analytics',
-          component: () => import('./views/DashboardAnalytics.vue'),
+          path: '/dashboard',
+          name: 'dashboard',
+          component: () => import('./views/dashboard/DoctorDashboard.vue'),
           meta: {
             rule: 'doctor',
           }
         },
         {
-          path: '/dashboard/ecommerce',
-          name: 'dashboard-ecommerce',
-          component: () => import('./views/DashboardECommerce.vue'),
+          path: '/dashboard/admin',
+          name: 'dashboard-admin',
+          component: () => import('./views/dashboard/DoctorDashboard.vue'),
           meta: {
             rule: 'superAdmin',
           }
         },
-
-        // =============================================================================
-        // My Routes
-        // =============================================================================
         {
           path: '/tenant',
           name: 'tenant',

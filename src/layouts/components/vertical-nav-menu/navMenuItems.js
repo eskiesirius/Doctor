@@ -36,17 +36,17 @@ export default [
     i18n: 'Dashboard',
     submenu: [
       {
-        url: '/dashboard/analytics',
-        name: 'Analytics',
-        slug: 'dashboard-analytics',
-        i18n: 'Analytics'
+        url: '/dashboard',
+        name: 'dashboard',
+        slug: 'dashboard',
+        i18n: 'Main'
       },
       {
-        url: '/dashboard/ecommerce',
-        name: 'eCommerce',
-        slug: 'dashboard-ecommerce',
-        i18n: 'eCommerce'
-      }
+        url: '/dashboard/admin',
+        name: 'Admin',
+        slug: 'dashboard-admin',
+        i18n: 'Admin'
+      },
     ]
   },
   {

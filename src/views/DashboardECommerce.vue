@@ -276,7 +276,10 @@ export default{
   created () {
     // Subscribers gained - Statistics
     this.$http.get('/api/card/card-statistics/subscribers')
-      .then((response) => { this.subscribersGained = response.data })
+      .then((response) => { 
+        this.subscribersGained = response.data 
+        console.log(this.subscribersGained)
+    })
       .catch((error) => { console.log(error) })
 
       // Revenue Generated
@@ -296,7 +299,10 @@ export default{
 
       // Revenue Comparison
     this.$http.get('/api/card/card-analytics/revenue-comparison')
-      .then((response) => { this.revenueComparisonLine = response.data })
+      .then((response) => { 
+        this.revenueComparisonLine = response.data 
+        console.log(this.revenueComparisonLine)
+    })
       .catch((error) => { console.log(error) })
 
       // Goal Overview
